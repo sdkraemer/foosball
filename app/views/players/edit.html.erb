@@ -1,0 +1,41 @@
+<%= button_to "Back", players_path, :method => "get", :class => 'btn btn-default btn-sm' %>
+
+<%= form_for :player, url: player_path(@player), method: :patch do |f| %>
+
+	<% if @player.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@player.errors.count, "error") %> prohibited
+        this article from being saved:
+      </h2>
+      <ul>
+        <% @player.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="form-group">
+    <%= f.label :username, 'User Name' %><br>
+    <%= f.text_field :username %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :firstname, 'First Name' %><br>
+    <%= f.text_field :firstname %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :lastname, 'Last Name' %><br>
+    <%= f.text_field :lastname %>
+  </div>
+ 
+ 
+  <div class="form-group">
+    <%= f.submit "Update Player", class: 'btn btn-default btn-sm'%>
+  </div>
+<% end %>
+
+

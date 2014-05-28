@@ -1,0 +1,52 @@
+<%= form_for :player, url: players_path do |f| %>
+
+	<% if @player.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@player.errors.count, "error") %> prohibited
+        this article from being saved:
+      </h2>
+      <ul>
+        <% @player.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="form-group">
+    <%= f.label :username, 'User Name' %><br>
+    <%= f.text_field :username %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :firstname, 'First Name' %><br>
+    <%= f.text_field :firstname %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :lastname, 'Last Name' %><br>
+    <%= f.text_field :lastname %>
+  </div>
+ 
+ 
+  <div class="form-group">
+    <%= f.submit "Save Player", class: 'btn btn-default btn-sm'%>
+  </div>
+<% end %>
+
+
+
+
+<!--<form role="form">
+  <div class="form-group">
+    <label for="firstName">First Name</label>
+    <input type="text" class="form-control" id="firstName" placeholder="Enter First Name">
+  </div>
+  <div class="form-group">
+    <label for="lastName">Last Name</label>
+    <input type="text" class="form-control" id="lastName" placeholder="Enter Last Name">
+  </div>
+  <button type="submit" class="btn btn-default">Create Player</button>
+</form>-->

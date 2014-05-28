@@ -1,0 +1,22 @@
+
+http://www.railstutorial.org/book/modeling_users
+rails generate controller Players new --no-test-framework
+rails generate model Player firstname:string lastname:string
+bundle exec rake db:migrate
+rails generate migration add_username_to_players username:string
+
+Player:
+first name
+last name
+
+Game:
+dateplayed
+teamoneid
+teamtwoid
+
+
+
+rails generate model Team game:references
+rails generate model Position position_type:enum team:references 
+
+
