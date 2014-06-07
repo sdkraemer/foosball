@@ -11,7 +11,30 @@
     <![endif]-->
   </head>
   <body>
-    <header class="navbar navbar-fixed-top navbar-inverse">
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <%= link_to "Foosball", '#', class: "navbar-brand" %>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="<%= current_page?(root_path)? 'active' : '' %>"><%= link_to "Home", root_path %></li>
+            <li class="<%= current_page?(players_path)? 'active' : '' %>"><%= link_to "Players", players_path %></li>
+            <li><%= link_to "Recent Games", '#' %></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+
+    <!--<header class="navbar navbar-fixed-top navbar-inverse">
       <div class="navbar-inner">
         <div class="container">
           <%= link_to "Foosball", '#', id: "logo" %>
@@ -24,7 +47,7 @@
           </nav>
         </div>
       </div>
-    </header>
+    </header>-->
     <div class="container">
       <%= yield %>
     </div>

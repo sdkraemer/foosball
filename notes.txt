@@ -20,3 +20,4 @@ rails generate model Team game:references
 rails generate model Position position_type:enum team:references 
 
 
+heroku run rake db:migrate
