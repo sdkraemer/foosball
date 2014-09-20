@@ -8,7 +8,9 @@ class GamesController < ApplicationController
 
  	def new
  		@game = Game.new()
- 		2.times{ @game.teams.build }
+ 		#2.times{ @game.teams.build }
+ 		@game.teams.build
+ 		@game.teams.build
  		@player = Player.all
  	end
 
