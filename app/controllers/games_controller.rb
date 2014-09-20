@@ -8,6 +8,8 @@ class GamesController < ApplicationController
 
  	def new
  		@game = Game.new()
+ 		2.times{ @game.teams.build }
+ 		@player = Player.all
  	end
 
  	def edit

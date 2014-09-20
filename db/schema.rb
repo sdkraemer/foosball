@@ -11,25 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140525205620) do
+ActiveRecord::Schema.define(version: 20140622174349) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "game_teams", id: false, force: true do |t|
+    t.integer "game_id", null: false
+    t.integer "team_id", null: false
+  end
 
   create_table "games", force: true do |t|
-    t.string   "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "teamoneid"
-    t.string   "teamtwoid"
+    t.datetime "started_at"
   end
-
-  create_table "goals", force: true do |t|
-    t.integer  "game_id"
-    t.integer  "position_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "goals", ["game_id"], name: "index_goals_on_game_id"
-  add_index "goals", ["position_id"], name: "index_goals_on_position_id"
 
   create_table "players", force: true do |t|
     t.string   "firstname"
@@ -39,23 +35,13 @@ ActiveRecord::Schema.define(version: 20140525205620) do
     t.string   "username"
   end
 
-  create_table "positions", force: true do |t|
-    t.integer  "position_type"
-    t.integer  "team_id"
-    t.integer  "player_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "positions", ["player_id"], name: "index_positions_on_player_id"
-  add_index "positions", ["team_id"], name: "index_positions_on_team_id"
-
   create_table "teams", force: true do |t|
-    t.integer  "game_id"
+    t.integer  "striker_id"
+    t.integer  "midfield_id"
+    t.integer  "defense_id"
+    t.integer  "goalie_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "teams", ["game_id"], name: "index_teams_on_game_id"
 
 end

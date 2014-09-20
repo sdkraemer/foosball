@@ -21,3 +21,24 @@ rails generate model Position position_type:enum team:references
 
 
 heroku run rake db:migrate
+git status
+git commit -am 'message'
+git push  <REMOTENAME> <BRANCHNAME> 
+git push heroku master
+
+
+#destroy model/table
+rails destroy model game
+rails generate migration drop_games
+
+rails generate model Team striker_id:integer midfield_id:integer defense_id:integer goalie_id:integer
+create_join_table :game, :team
+
+
+
+
+TESTING:
+rake test test\models\game_test.rb
+
+postgres:
+	rake db:schema:load #ran this after creating the database

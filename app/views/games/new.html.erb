@@ -1,23 +1,64 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Team One</h3>
+<%= form_for :game, url:{action: "create"}, html:{method: "post"} do |f| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Team One</h3>
+    </div>
+    <%= f.fields_for :teams do |team_two_form| %>
+      <div class="panel-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-1">Striker:</div> 
+            <div class="col-md-1"><%= team_two_form.select(:striker_id, options_for_select(@player.collect {|player| [player.firstname, player.id]})) %></div>
+          </div>
+          <div class="row">
+            <div class="col-md-1">Midfield:</div> 
+            <div class="col-md-1"><%= team_two_form.select(:midfield_id, options_for_select(@player.collect {|player| [player.firstname, player.id]})) %></div>
+          </div>
+          <div class="row">
+            <div class="col-md-1">Defense:</div>
+            <div class="col-md-1"><%= team_two_form.select(:defense_id, options_for_select(@player.collect {|player| [player.firstname, player.id]})) %></div>
+          </div>
+          <div class="row">
+            <div class="col-md-1">Goalie:</div>
+            <div class="col-md-1"><%= team_two_form.select(:goalie_id, options_for_select(@player.collect {|player| [player.firstname, player.id]})) %></div>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
-  <div class="panel-body">
-    Team one form goes here
-  </div>
-</div>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Team Two</h3>
-  </div>
-  <div class="panel-body">
-    Team two form goes here
-  </div>
-</div>
 
-<div class="panel panel-default">
-  <div class="panel-body">
-    Basic panel example
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Team Two</h3>
+    </div>
+    <%= f.fields_for :teams do |team_two_form| %>
+      <div class="panel-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-1">Striker:</div> 
+            <div class="col-md-1"><%= team_two_form.select(:striker_id, options_for_select(@player.collect {|player| [player.firstname, player.id]})) %></div>
+          </div>
+          <div class="row">
+            <div class="col-md-1">Midfield:</div> 
+            <div class="col-md-1"><%= team_two_form.select(:midfield_id, options_for_select(@player.collect {|player| [player.firstname, player.id]})) %></div>
+          </div>
+          <div class="row">
+            <div class="col-md-1">Defense:</div>
+            <div class="col-md-1"><%= team_two_form.select(:defense_id, options_for_select(@player.collect {|player| [player.firstname, player.id]})) %></div>
+          </div>
+          <div class="row">
+            <div class="col-md-1">Goalie:</div>
+            <div class="col-md-1"><%= team_two_form.select(:goalie_id, options_for_select(@player.collect {|player| [player.firstname, player.id]})) %></div>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
-</div>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      Basic panel example
+    </div>
+  </div>
+<% end %>

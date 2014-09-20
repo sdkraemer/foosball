@@ -7,16 +7,19 @@ gem 'rails', '4.0.4'
 gem 'sass-rails', '>= 3.2'
 gem 'bootstrap-sass', '~> 3.1.1'
 
-group :development, :test do
-  gem 'sqlite3', '1.3.8'
-  gem 'rspec-rails', '2.13.1'
-end
 
-group :test do
-  gem 'selenium-webdriver', '2.35.1'
-  gem 'capybara', '2.1.0'
-end
+group :development, :test do 
+	gem 'rspec-rails' 
+	gem 'factory_girl_rails'
+	gem 'pg', '0.15.1'
+end 
 
+group :test do 
+	gem 'faker' 
+	gem 'capybara' 
+	gem 'guard-rspec' 
+	gem 'launchy' 
+end
 
 
 # Use Uglifier as compressor for JavaScript assets
@@ -46,3 +49,5 @@ group :production do
   gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'
 end
+
+gem 'annotate', '~> 2.6.3'
