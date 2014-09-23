@@ -4,13 +4,26 @@ class GamesController < ApplicationController
  	end
 
  	def create
+ 		#todo: Need to whitelist parameters. Did this to get it working initially
+ 		@game = Game.new(game_params)
+ 		if @game.save
+ 			#Rails.logger.debug("My object: #{params[:game][:teams]}")
+ 			#params[:game][:teams].each do |teams_attributes|
+ 			#	Rails.logger.debug("My object: #{teams_attributes}")
+ 			#	@game.teams.build(teams_attributes)
+ 			#end
+
+ 			redirect_to edit_game_path(@game)
+ 		else
+ 			render :new
+ 		end
  	end
 
  	def new
- 		@game = Game.new()
- 		#2.times{ @game.teams.build }
- 		@game.teams.build
- 		@game.teams.build
+ 		@game = Game.new
+ 		2.times{ @game.teams.build }
+ 		#@game.teams.build
+ 		#@game.teams.build
  		@player = Player.all
  	end
 
@@ -25,4 +38,9 @@ class GamesController < ApplicationController
 
  	def destroy
  	end
+
+ 	private
+  def game_params
+    params.require(:game).permit( :id, :teams_attributes => [:id, :striker_id, :midfield_id, :defense_id, :goalie_id])
+  end
 end

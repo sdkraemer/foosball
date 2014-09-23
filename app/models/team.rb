@@ -23,4 +23,6 @@ class Team < ActiveRecord::Base
 	validates :midfield_id, presence: true
 	validates :defense_id, presence: true
 	validates :goalie_id, presence: true
+
+	accepts_nested_attributes_for :games
 end

@@ -13,7 +13,7 @@ class PlayersController < ApplicationController
 		if @player.save
 			redirect_to edit_player_path(@player)
 		else
-			render 'new'
+			render :new
 		end
 	end
 
