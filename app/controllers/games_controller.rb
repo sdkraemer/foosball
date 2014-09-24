@@ -21,7 +21,10 @@ class GamesController < ApplicationController
 
  	def new
  		@game = Game.new
- 		2.times{ @game.teams.build }
+ 		blueteam = @game.teams.build
+ 		blueteam.color = "blue"
+ 		redteam = @game.teams.build
+ 		redteam.color = "red"
  		#@game.teams.build
  		#@game.teams.build
  		@player = Player.all
@@ -41,6 +44,6 @@ class GamesController < ApplicationController
 
  	private
   def game_params
-    params.require(:game).permit( :id, :teams_attributes => [:id, :striker_id, :midfield_id, :defense_id, :goalie_id])
+    params.require(:game).permit( :id, :teams_attributes => [:id, :color])
   end
 end

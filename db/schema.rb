@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140923023543) do
+ActiveRecord::Schema.define(version: 20140923031937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,16 @@ ActiveRecord::Schema.define(version: 20140923023543) do
     t.datetime "started_at"
   end
 
+  create_table "goals", force: true do |t|
+    t.integer  "quantity",    default: 1
+    t.datetime "scored_at"
+    t.integer  "position_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "goals", ["position_id"], name: "index_goals_on_position_id", using: :btree
+
   create_table "players", force: true do |t|
     t.string   "firstname"
     t.string   "lastname"
@@ -29,5 +39,25 @@ ActiveRecord::Schema.define(version: 20140923023543) do
     t.datetime "updated_at"
     t.string   "username"
   end
+
+  create_table "positions", force: true do |t|
+    t.integer  "type"
+    t.integer  "player_id"
+    t.integer  "team_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "positions", ["player_id"], name: "index_positions_on_player_id", using: :btree
+  add_index "positions", ["team_id"], name: "index_positions_on_team_id", using: :btree
+
+  create_table "teams", force: true do |t|
+    t.integer  "color"
+    t.integer  "game_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "teams", ["game_id"], name: "index_teams_on_game_id", using: :btree
 
 end
