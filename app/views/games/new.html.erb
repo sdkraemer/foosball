@@ -1,24 +1,20 @@
 
-<% @game.teams.each do |team| %>
-  <%= team.color %><br>
-<% end %>
-
 <%= form_for @game, url:{action: "create"}, html:{method: "post"} do |f| %>
     
 
     <%= f.hidden_field :id %>
-    <%= f.fields_for :teams do |team_two_form| %>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title"> Team</h3>
-      </div>
-      <div class="panel-body">
-        <div class="container-fluid">
-          
+    <%= f.fields_for :teams do |team_builder| %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"> Team <%= team_builder.object.color.humanize %></h3>
+        </div>
+        <div class="panel-body">
+          <%= team_builder.hidden_field :color %>
+          <div class="container-fluid">
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
 
 
   <%=  f.submit("Start Game!", :class => 'btn btn-default btn-sm') %>

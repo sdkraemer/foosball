@@ -21,12 +21,27 @@ class GamesController < ApplicationController
 
  	def new
  		@game = Game.new
+
+ 		#create the blue team
  		blueteam = @game.teams.build
  		blueteam.color = "blue"
+ 		4.times{ blueteam.positions.build }
+
+ 		blueteam.positions[0].type = :goalie
+ 		blueteam.positions[1].type = :defense
+ 		blueteam.positions[2].type = :midfield
+ 		blueteam.positions[3].type = :striker
+
+ 		#create the red team
  		redteam = @game.teams.build
  		redteam.color = "red"
- 		#@game.teams.build
- 		#@game.teams.build
+ 		4.times{ redteam.positions.build}
+
+ 		redteam.positions[0].type = :goalie
+ 		redteam.positions[1].type = :defense
+ 		redteam.positions[2].type = :midfield
+ 		redteam.positions[3].type = :striker
+
  		@player = Player.all
  	end
 
