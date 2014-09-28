@@ -1,10 +1,26 @@
 FoosballApp::Application.routes.draw do
+  get 'position/score'
+
   #get "players/index"
   #get "players/new"
   #get "pages/home"
 
   resources :players
-  resources :games
+  resources :games do 
+    member do 
+      post :undo
+    end
+    
+    resources :teams do
+      resources :positions do
+        member do 
+          post 'score'
+        end 
+      end
+    end
+  end
+
+  resources :positions
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

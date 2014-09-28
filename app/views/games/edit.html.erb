@@ -1,5 +1,55 @@
 
-<%= @game.teams.each do |team| %>
-  loop<br>
+<%= form_for @game, url: undo_game_path(@game), html: {method: "post"} do |f| %>
+  <% f.submit("Undo Last Goal", :class => 'btn btn-default btn-sm') %>
 <% end %>
-after loop
+<br>
+<% if @game.completed_at %>
+  <h3><%= @game.teams.where(winner: true)[0].color.humanize %> Wins!</h3>
+  Completed at:<%= @game.completed_at.to_s %><br>
+<% end %>
+
+<% @game.teams.each do |team| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"> Team <%= team.color.humanize %>:<%= team.get_goals_total %></h3>
+    </div>
+    <div class="panel-body">
+      <div class="container-fluid">
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>Player</th>
+              <th>Goals Scored</th>
+              <th></th>
+              <th>Own Goals</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          <% team.positions.each do |position| %>
+            <tr>
+              <td><%= position.position_type.humanize %></td> 
+              <td><%= position.player.firstname.humanize %></td>
+              <td><%= position.goals.where(quantity: 1).count %></td>
+              <td>
+                <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
+                  <%=  f.submit("Goal Scored", :class => 'btn btn-default btn-sm pull-left') %>
+                <% end %>
+              </td>
+              <td><%= position.goals.where(quantity: -1).count %></td>
+              <td>
+                <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
+                  <%= hidden_field_tag :quantity, "-1" %>
+                  <%=  f.submit("Own Goal", :class => 'btn btn-default btn-sm') %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>
+

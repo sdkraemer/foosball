@@ -30,5 +30,7 @@ module FoosballApp
           :request_specs => true 
         g.fixture_replacement :factory_girl, :dir => "spec/factories" 
     end
+
+    config.time_zone = 'Arizona'
   end
 end

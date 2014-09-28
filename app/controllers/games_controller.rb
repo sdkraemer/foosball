@@ -47,7 +47,7 @@ class GamesController < ApplicationController
  	end
 
  	def edit
- 		@game = Game.includes(teams: [:positions]).find(params[:id])
+ 		@game = Game.includes(teams: [positions: [:goals]]).find(params[:id])
  	end
 
  	def show
@@ -59,8 +59,21 @@ class GamesController < ApplicationController
  	def destroy
  	end
 
+ 	def undo
+ 		game = Game.find_by_id(undo_params[:id])
+ 		lastgoal = game.goals.order("created_at").last
+ 		lastgoal.delete
+ 		redirect_to edit_game_path(game)
+ 	end
+
+
+
  	private
-  def game_params
-    params.require(:game).permit( :id, :teams_attributes => [:id, :color, :positions_attributes => [:id, :player_id, :position_type]])
-  end
+	  def game_params
+	    params.require(:game).permit( :id, :teams_attributes => [:id, :color, :positions_attributes => [:id, :player_id, :position_type]])
+	  end
+
+	  def undo_params
+	  	params.permit(:id)
+	  end
 end
