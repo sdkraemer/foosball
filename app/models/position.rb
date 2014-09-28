@@ -1,6 +1,8 @@
 class Position < ActiveRecord::Base
-  belongs_to :player
   belongs_to :team
-  has_many :goals
-  enum type: {striker: 0, midfield: 1, defense: 2, goalie: 3}
+  belongs_to :player
+  has_many :goals, :dependent => :destroy
+  enum position_type: {goalie: 0, defense: 1, midfield: 2, striker: 3}
+
+
 end

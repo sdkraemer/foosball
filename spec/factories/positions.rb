@@ -2,8 +2,7 @@
 
 FactoryGirl.define do
   factory :position do
-    type 1
-    player nil
+    position_type 1
     team nil
   end
 end

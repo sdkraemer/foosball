@@ -13,6 +13,8 @@ class GamesController < ApplicationController
  			#	@game.teams.build(teams_attributes)
  			#end
 
+ 			#@game.teams.build(game_params[:teams_attributes][0])
+
  			redirect_to edit_game_path(@game)
  		else
  			render :new
@@ -26,26 +28,26 @@ class GamesController < ApplicationController
  		blueteam = @game.teams.build
  		blueteam.color = "blue"
  		4.times{ blueteam.positions.build }
-
- 		blueteam.positions[0].type = :goalie
- 		blueteam.positions[1].type = :defense
- 		blueteam.positions[2].type = :midfield
- 		blueteam.positions[3].type = :striker
+ 		blueteam.positions[3].position_type = :striker
+ 		blueteam.positions[2].position_type = :midfield
+ 		blueteam.positions[1].position_type = :defense
+ 		blueteam.positions[0].position_type = :goalie
 
  		#create the red team
  		redteam = @game.teams.build
  		redteam.color = "red"
  		4.times{ redteam.positions.build}
 
- 		redteam.positions[0].type = :goalie
- 		redteam.positions[1].type = :defense
- 		redteam.positions[2].type = :midfield
- 		redteam.positions[3].type = :striker
+ 		redteam.positions[3].position_type = :striker
+ 		redteam.positions[2].position_type = :midfield
+ 		redteam.positions[1].position_type = :defense
+ 		redteam.positions[0].position_type = :goalie
 
  		@player = Player.all
  	end
 
  	def edit
+ 		@game = Game.includes(teams: [:positions]).find(params[:id])
  	end
 
  	def show
@@ -59,6 +61,6 @@ class GamesController < ApplicationController
 
  	private
   def game_params
-    params.require(:game).permit( :id, :teams_attributes => [:id, :color])
+    params.require(:game).permit( :id, :teams_attributes => [:id, :color, :positions_attributes => [:id, :player_id, :position_type]])
   end
 end

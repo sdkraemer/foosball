@@ -11,6 +11,16 @@
         <div class="panel-body">
           <%= team_builder.hidden_field :color %>
           <div class="container-fluid">
+            <%= team_builder.fields_for :positions do |position_builder| %>
+              <div class="row">
+                <%= position_builder.hidden_field :position_type %>
+                <div class="col-md-1"><%= position_builder.object.position_type.humanize%>:</div> 
+                <div class="col-md-1">
+                  <%= position_builder.select(:player_id, options_for_select(@player.collect {|player| [player.firstname.humanize, player.id]})) %>
+                </div>
+                
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

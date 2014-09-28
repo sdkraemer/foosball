@@ -8,10 +8,13 @@
 #
 
 class Game < ActiveRecord::Base
-	has_many :teams
+	has_many :teams, :dependent => :destroy
+	has_many :goals, :dependent => :destroy
+
 	validate :teams_cannot_be_more_than_two, :game_cannot_be_started_without_two_teams
 
 	accepts_nested_attributes_for :teams, :allow_destroy => true
+	
 	enum color: [:red, :blue]
 
 	def teams_cannot_be_more_than_two

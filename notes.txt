@@ -42,3 +42,8 @@ rake test test\models\game_test.rb
 
 postgres:
 	rake db:schema:load #ran this after creating the database
+
+
+
+rails generate model Position position_type:integer team:references
+rails generate model Goals scored_at:timestamp team:references position:references
