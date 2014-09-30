@@ -14,7 +14,7 @@
       <h3 class="panel-title"> Team <%= team.color.humanize %>:<%= team.get_goals_total %></h3>
     </div>
     <div class="panel-body">
-      <div class="container-fluid">
+      <div class="table-responsive">
         <table class="table table-condensed">
           <thead>
             <tr>
@@ -34,14 +34,14 @@
               <td><%= position.goals.where(quantity: 1).count %></td>
               <td>
                 <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
-                  <%=  f.submit("Goal Scored", :class => 'btn btn-default pull-left') %>
+                  <%=  f.submit("Goal Scored", :class => 'btn btn-default pull-left btn-sm') %>
                 <% end %>
               </td>
               <td><%= position.goals.where(quantity: -1).count %></td>
               <td>
                 <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
                   <%= hidden_field_tag :quantity, "-1" %>
-                  <%=  f.submit("Own Goal", :class => 'btn btn-default') %>
+                  <%=  f.submit("Own Goal", :class => 'btn btn-default btn-sm') %>
                 <% end %>
               </td>
             </tr>
