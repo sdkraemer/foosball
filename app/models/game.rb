@@ -22,6 +22,10 @@ class Game < ActiveRecord::Base
     errors[:base] = 'Games cannot have more than two teams' unless teams.size<=2
 	end
 
+	def winning_team
+		winningteam = self.teams.where(winner: true)
+	end
+
 # def game_cannot_be_started_without_two_teams
 #		if started_at != nil and teams.size < 2 
 #			errors[:base] = 'Games cannot be started without two teams' 

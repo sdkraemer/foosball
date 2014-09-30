@@ -10,7 +10,7 @@
 
 <% @game.teams.each do |team| %>
   <div class="panel panel-default">
-    <div class="panel-heading">
+    <div class="panel-heading <%= team.color%>team">
       <h3 class="panel-title"> Team <%= team.color.humanize %>:<%= team.get_goals_total %></h3>
     </div>
     <div class="panel-body">
@@ -34,14 +34,14 @@
               <td><%= position.goals.where(quantity: 1).count %></td>
               <td>
                 <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
-                  <%=  f.submit("Goal Scored", :class => 'btn btn-default btn-sm pull-left') %>
+                  <%=  f.submit("Goal Scored", :class => 'btn btn-default pull-left') %>
                 <% end %>
               </td>
               <td><%= position.goals.where(quantity: -1).count %></td>
               <td>
                 <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
                   <%= hidden_field_tag :quantity, "-1" %>
-                  <%=  f.submit("Own Goal", :class => 'btn btn-default btn-sm') %>
+                  <%=  f.submit("Own Goal", :class => 'btn btn-default') %>
                 <% end %>
               </td>
             </tr>
@@ -52,4 +52,24 @@
     </div>
   </div>
 <% end %>
+
+<h3>Goals</h3>
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <td>Goal #</td>
+      <td>Player</td>
+      <td>Scored At</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @game.goals.each_with_index do |goal, index| %>
+      <tr>
+        <td><%= (index+1) %></td>
+        <td><%= goal.player.firstname.humanize %></td>
+        <td><%= goal.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 

@@ -66,7 +66,9 @@ class GamesController < ApplicationController
  		redirect_to edit_game_path(game)
  	end
 
-
+ 	def recent_games
+ 		@games = Game.includes(:teams).order("created_at").first(10)
+ 	end
 
  	private
 	  def game_params

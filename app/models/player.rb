@@ -18,4 +18,11 @@ class Player < ActiveRecord::Base
 						 length: { minimum: 4 }
 	validates :firstname, presence: true
 	validates :lastname, presence: true
+
+	#subtracts own goals
+	def total_goals
+		scored_count = self.goals.where(quantity: 1).count
+		own_goals_count = self.goals.where(quantity: -1).count
+		scored_count - own_goals_count
+	end
 end

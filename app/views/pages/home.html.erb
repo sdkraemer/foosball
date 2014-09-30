@@ -3,3 +3,21 @@
 
   <%= link_to "Start a Game", new_game_path, class: "btn btn-large btn-primary" %>
 </div>
+
+<h3>Goals Scored</h3>
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Player</th>
+      <th>Goals Scored</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @players.each do |player| %>
+    <tr>
+      <td><%= player.firstname.humanize %></td>
+      <td><%= player.total_goals %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

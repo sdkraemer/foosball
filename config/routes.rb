@@ -6,6 +6,7 @@ FoosballApp::Application.routes.draw do
   #get "pages/home"
 
   resources :players
+  get 'games/recent_games'
   resources :games do 
     member do 
       post :undo
