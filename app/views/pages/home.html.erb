@@ -10,6 +10,8 @@
     <tr>
       <th>Player</th>
       <th>Goals Scored</th>
+      <th>GPG</th>
+      <th>Record</th>
     </tr>
   </thead>
   <tbody>
@@ -17,6 +19,8 @@
     <tr>
       <td><%= player.firstname.humanize %></td>
       <td><%= player.total_goals %></td>
+      <td><%= number_with_precision(player.goals_per_game, precision: 2) %></td>
+      <td><%= player.player_wins %> - <%= player.player_losses %></td>
     </tr>
   <% end %>
   </tbody>

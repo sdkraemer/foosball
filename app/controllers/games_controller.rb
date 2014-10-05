@@ -43,7 +43,7 @@ class GamesController < ApplicationController
  		redteam.positions[1].position_type = :defense
  		redteam.positions[0].position_type = :goalie
 
- 		@player = Player.all
+ 		@player = Player.all.order(:firstname)
  	end
 
  	def edit

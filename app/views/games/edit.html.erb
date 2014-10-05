@@ -33,15 +33,19 @@
               <td><%= position.player.firstname.humanize %></td>
               <td><%= position.goals.where(quantity: 1).count %></td>
               <td>
-                <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
-                  <%=  f.submit("Goal Scored", :class => 'btn btn-default pull-left btn-sm') %>
+                <% if not @game.is_finished %>
+                  <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
+                    <%=  f.submit("Goal Scored", :class => 'btn btn-default pull-left btn-sm') %>
+                  <% end %>
                 <% end %>
               </td>
               <td><%= position.goals.where(quantity: -1).count %></td>
               <td>
-                <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
-                  <%= hidden_field_tag :quantity, "-1" %>
-                  <%=  f.submit("Own Goal", :class => 'btn btn-default btn-sm') %>
+                <% if not @game.is_finished %>
+                  <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
+                    <%= hidden_field_tag :quantity, "-1" %>
+                    <%=  f.submit("Own Goal", :class => 'btn btn-default btn-sm') %>
+                  <% end %>
                 <% end %>
               </td>
             </tr>

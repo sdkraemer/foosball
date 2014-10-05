@@ -25,4 +25,27 @@ class Player < ActiveRecord::Base
 		own_goals_count = self.goals.where(quantity: -1).count
 		scored_count - own_goals_count
 	end
+
+	def goals_per_game
+		games_count = Goal.select(:game_id).uniq.where(player_id: self.id).count
+		if games_count > 0
+			(total_goals*1.0)/games_count
+		else
+			0
+		end
+	end
+
+	def player_wins
+		Team.uniq.where(winner: true).joins(:positions).where(:positions => {:player_id => self.id}).count
+	end
+
+	def player_losses
+
+		teams = Team.uniq.where(winner: false).joins(:positions).where(:positions => {:player_id => self.id})
+
+		Game.where.not(completed_at: nil).where(id: teams.select(:game_id)).count
+
+
+
+	end
 end
