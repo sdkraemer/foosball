@@ -67,7 +67,7 @@ class GamesController < ApplicationController
  	end
 
  	def recent_games
- 		@games = Game.includes(:teams).order("created_at").first(10)
+ 		@games = Game.includes(:teams).order("created_at desc").first(10)
  	end
 
  	private

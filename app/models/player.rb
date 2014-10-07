@@ -21,9 +21,11 @@ class Player < ActiveRecord::Base
 
 	#subtracts own goals
 	def total_goals
-		scored_count = self.goals.where(quantity: 1).count
-		own_goals_count = self.goals.where(quantity: -1).count
-		scored_count - own_goals_count
+		goals = self.goals
+		scored_count = goals.where(quantity: 1).count
+		own_goals_count = goals.where(quantity: -1).count
+		
+		@total_goals ||= (scored_count - own_goals_count)
 	end
 
 	def goals_per_game
@@ -36,16 +38,22 @@ class Player < ActiveRecord::Base
 	end
 
 	def player_wins
-		Team.uniq.where(winner: true).joins(:positions).where(:positions => {:player_id => self.id}).count
+		teams = Team.uniq.where(winner: true).joins(:positions).where(:positions => {:player_id => self.id})
+		#Team.uniq.where(winner: true).joins(:positions).where(:positions => {:player_id => self.id}).count
+		@wins ||= Game.where.not(completed_at: nil).where(id: teams.select(:game_id)).count
 	end
 
 	def player_losses
-
 		teams = Team.uniq.where(winner: false).joins(:positions).where(:positions => {:player_id => self.id})
+		@losses ||= Game.where.not(completed_at: nil).where(id: teams.select(:game_id)).count
+	end
 
-		Game.where.not(completed_at: nil).where(id: teams.select(:game_id)).count
-
-
-
+	def win_pct
+		total_games = @wins.to_i+@losses.to_i
+		if total_games > 0
+			(@wins.to_i*1.0/total_games)*100
+		else
+			0
+		end
 	end
 end

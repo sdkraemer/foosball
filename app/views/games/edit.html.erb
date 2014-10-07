@@ -19,19 +19,17 @@
           <thead>
             <tr>
               <th>Position</th>
+              <th></th>
+              <th></th>
               <th>Player</th>
               <th>Goals Scored</th>
-              <th></th>
               <th>Own Goals</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
           <% team.positions.each do |position| %>
             <tr>
               <td><%= position.position_type.humanize %></td> 
-              <td><%= position.player.firstname.humanize %></td>
-              <td><%= position.goals.where(quantity: 1).count %></td>
               <td>
                 <% if not @game.is_finished %>
                   <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
@@ -39,7 +37,6 @@
                   <% end %>
                 <% end %>
               </td>
-              <td><%= position.goals.where(quantity: -1).count %></td>
               <td>
                 <% if not @game.is_finished %>
                   <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
@@ -48,6 +45,9 @@
                   <% end %>
                 <% end %>
               </td>
+              <td><%= position.player.firstname.humanize %></td>
+              <td><%= position.goals.where(quantity: 1).count %></td>
+              <td><%= position.goals.where(quantity: -1).count %></td>
             </tr>
           <% end %>
           </tbody>

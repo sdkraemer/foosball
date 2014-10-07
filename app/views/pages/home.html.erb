@@ -4,7 +4,7 @@
   <%= link_to "Start a Game", new_game_path, class: "btn btn-large btn-primary" %>
 </div>
 
-<h3>Goals Scored</h3>
+<h3>Stats</h3>
 <table class="table table-condensed">
   <thead>
     <tr>
@@ -12,6 +12,7 @@
       <th>Goals Scored</th>
       <th>GPG</th>
       <th>Record</th>
+      <th>Win %</th>
     </tr>
   </thead>
   <tbody>
@@ -21,6 +22,7 @@
       <td><%= player.total_goals %></td>
       <td><%= number_with_precision(player.goals_per_game, precision: 2) %></td>
       <td><%= player.player_wins %> - <%= player.player_losses %></td>
+      <td><%= player.win_pct.to_i %></td>
     </tr>
   <% end %>
   </tbody>
