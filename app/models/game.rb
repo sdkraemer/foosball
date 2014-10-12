@@ -18,6 +18,10 @@ class Game < ActiveRecord::Base
 	
 	enum color: [:red, :blue]
 
+	scope :completed, -> { where.not(completed_at: nil) }
+
+
+
 	def teams_cannot_be_more_than_two
     errors[:base] = 'Games cannot have more than two teams' unless teams.size<=2
 	end

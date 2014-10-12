@@ -1,5 +1,16 @@
+$navbar-default-color: #3ec303;
+$navbar-default-link-color: #3ec303;
+$navbar-default-link-active-bg: #3ec303;
+$navbar-default-link-active-color: #ffffff;
+
+$btn-default-bg: #3ec303;
+$btn-default-border: #2d8c01;
+$btn-primary-bg: #3ec303;
+$btn-primary-border: #2d8c01;
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
 
 .redteam{
 	background-color: rgb(175, 0, 0) !important;

@@ -3,7 +3,11 @@ class Team < ActiveRecord::Base
   has_many :positions, :dependent => :destroy
   has_many :goals
   enum color: {blue: 0, red: 1}
+
   accepts_nested_attributes_for :positions, :allow_destroy => true
+
+  scope :winner, -> {where(winner: true)}
+  scope :loser, -> {where.not(winner: true)}
 
   def get_goals_total
   	@game = self.game

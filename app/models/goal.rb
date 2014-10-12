@@ -7,6 +7,9 @@ class Goal < ActiveRecord::Base
   after_save :complete_game
   before_save :timestamp
 
+  scope :scored_goal, -> { where(quantity: 1)}
+  scope :own_goal, -> { where(quantity: -1)}
+
   def timestamp
     scored_at = DateTime.now
   end
