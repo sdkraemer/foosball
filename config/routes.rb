@@ -10,6 +10,7 @@ FoosballApp::Application.routes.draw do
   resources :games do 
     member do 
       post :undo
+      post :rematch
     end
     
     resources :teams do

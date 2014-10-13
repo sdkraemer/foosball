@@ -2,10 +2,17 @@
 <%= form_for @game, url: undo_game_path(@game), html: {method: "post"} do |f| %>
   <% f.submit("Undo Last Goal", :class => 'btn btn-default btn-sm') %>
 <% end %>
+</br>
+<% if @game.completed_at %>
+  <%= form_for @game, url:{action: "rematch"}, html:{method: "post"} do |f| %>
+    <%=  f.submit("Rematch", :class => 'btn btn-default btn-sm') %>
+  <% end %>
+<% end %>
 <br>
 <% if @game.completed_at %>
   <h3><%= @game.teams.where(winner: true)[0].color.humanize %> Wins!</h3>
   Completed at:<%= @game.completed_at.to_s %><br>
+
 <% end %>
 
 <% @game.teams.each do |team| %>

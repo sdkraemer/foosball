@@ -70,6 +70,10 @@ class GamesController < ApplicationController
  		@games = Game.includes(:teams).order("created_at desc").first(10)
  	end
 
+ 	def rematch
+ 		redirect_to new_game_path
+ 	end
+
  	private
 	  def game_params
 	    params.require(:game).permit( :id, :teams_attributes => [:id, :color, :positions_attributes => [:id, :player_id, :position_type]])
