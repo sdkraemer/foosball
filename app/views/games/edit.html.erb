@@ -1,4 +1,5 @@
 
+
 <%= form_for @game, url: undo_game_path(@game), html: {method: "post"} do |f| %>
   <% f.submit("Undo Last Goal", :class => 'btn btn-default btn-sm') %>
 <% end %>
