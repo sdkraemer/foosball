@@ -1,29 +1,38 @@
-<div class="jumbotron">
-  <h1>Time to foos.</h1>
-
+<%= stylesheet_link_tag "pages", media: "all",
+                                           "data-turbolinks-track" => true %>
+<div class="jumbotron" style="background-image: url('/assets/hero-bg2.jpg');background-size: 100%;background-image:fixed">
+  <h1 style="color:white;">Time to <span style="color:#3ec303;">foos</span></h1>
   <%= link_to "Start a Game", new_game_path, class: "btn btn-large btn-primary" %>
 </div>
 
-<h3>Stats</h3>
-<table class="table table-condensed">
-  <thead>
-    <tr>
-      <th>Player</th>
-      <th>Goals Scored</th>
-      <th>GPG</th>
-      <th>Record</th>
-      <th>Win %</th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @players.each do |player| %>
-    <tr>
-      <td><%= player.firstname.humanize %></td>
-      <td><%= player.total_goals %></td>
-      <td><%= number_with_precision(player.goals_per_game, precision: 2) %></td>
-      <td><%= player.player_wins %> - <%= player.player_losses %></td>
-      <td><%= player.win_pct.to_i %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+<div class="container">
+  <center><h1>Statistics</h1></center>
+  <div class="break"></div>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Goals Scored</th>
+        <th>GPG</th>
+        <th>Record</th>
+        <th>Win %</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @players.each do |player| %>
+      <tr>
+        <td><%= player.firstname.humanize %></td>
+        <td><%= player.total_goals %></td>
+        <td><%= number_with_precision(player.goals_per_game, precision: 2) %></td>
+        <td><%= player.player_wins %> - <%= player.player_losses %></td>
+        <td><%= player.win_pct.to_i %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+</br>
+</br>
+</br>
+</br>
+</br>

@@ -47,7 +47,7 @@ class GamesController < ApplicationController
  	end
 
  	def edit
- 		@game = Game.includes(teams: [positions: [:goals]]).find(params[:id])
+ 		@game = Game.includes(teams: [positions: [:goals]]).order("teams.color, positions.position_type desc").find(params[:id])
  	end
 
  	def show
@@ -61,8 +61,7 @@ class GamesController < ApplicationController
 
  	def undo
  		game = Game.find_by_id(undo_params[:id])
- 		lastgoal = game.goals.order("created_at").last
- 		lastgoal.delete
+ 		game.undo_last_goal
  		redirect_to edit_game_path(game)
  	end
 

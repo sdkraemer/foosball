@@ -31,6 +31,8 @@ module FoosballApp
         g.fixture_replacement :factory_girl, :dir => "spec/factories" 
     end
 
+    config.assets.precompile += %w( pages.css )
+
     config.time_zone = 'Arizona'
   end
 end

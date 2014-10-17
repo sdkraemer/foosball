@@ -36,6 +36,20 @@ class Game < ActiveRecord::Base
 		end
 	end
 
+	def undo_last_goal
+		if self.completed_at != nil
+			self.completed_at = nil
+			self.teams.each do |team|
+				team.winner = nil
+				team.save
+			end
+			self.save
+		end
+
+		lastgoal = self.goals.order("created_at").last
+ 		lastgoal.delete
+	end
+
 # def game_cannot_be_started_without_two_teams
 #		if started_at != nil and teams.size < 2 
 #			errors[:base] = 'Games cannot be started without two teams' 

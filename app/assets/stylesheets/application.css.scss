@@ -1,13 +1,37 @@
 $navbar-default-color: #3ec303;
+
 $navbar-default-link-color: #3ec303;
 $navbar-default-link-active-bg: #3ec303;
 $navbar-default-link-active-color: #ffffff;
 
+$navbar-default-link-active-bg: #3ec303;
+$navbar-default-link-color: #3ec303;
+$navbar-default-color: #3ec303;
+$navbar-default-link-active-color: #ffffff;
+$navbar-default-bg: #ffffff;
 $btn-primary-bg: #3ec303;
 $btn-primary-border: #2d8c01;
 
+/*$navbar-default-bg: #3ec303;
+$navbar-default-link-active-bg: #3ec303;
+$navbar-default-link-color: #ffffff;
+$navbar-default-color: #ffffff;
+$btn-primary-bg: #3ec303;
+$btn-primary-border: #2d8c01;
+
+.nav > li.active{
+  text-decoration: underline;
+  font-weight:bold;
+}*/
+
+/*
+ *= require_self
+ *= require_tree .
+ */
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
 
 
 .redteam{
