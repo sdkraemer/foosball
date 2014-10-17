@@ -1,0 +1,27 @@
+/* line 4, C:/Sites/foosball_app/app/assets/stylesheets/pages.css.scss */
+.jumbotron {
+  text-align: center;
+  margin-top: -20px;
+  box-shadow: inset 0px -69px 28px -49px white;
+}
+
+/* line 10, C:/Sites/foosball_app/app/assets/stylesheets/pages.css.scss */
+h1 {
+  color: #3ec303;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+/* line 17, C:/Sites/foosball_app/app/assets/stylesheets/pages.css.scss */
+.break {
+  height: 1px;
+  background-color: #3ec303;
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 1em;
+}
+
+/* line 26, C:/Sites/foosball_app/app/assets/stylesheets/pages.css.scss */
+.jumbotron h1 {
+  text-shadow: 0 0.0625em 0.125em #202226;
+}
