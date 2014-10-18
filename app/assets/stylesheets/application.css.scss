@@ -24,6 +24,8 @@ $btn-primary-border: #2d8c01;
   font-weight:bold;
 }*/
 
+
+
 /* ...
  *= require_self
  *= require_tree .
@@ -32,15 +34,30 @@ $btn-primary-border: #2d8c01;
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-
-
+//Custom Foos app CSS
 .redteam{
-	background-color: rgb(215, 128, 128) !important;
+  background-color: rgb(215, 128, 128) !important;
 }
 
 .blueteam{
-	background-color: rgb(146, 162, 203) !important;
+  background-color: rgb(146, 162, 203) !important;
 }
+
+h1.foos{
+  color:#3ec303;
+  //text-shadow: 0 0.0625em 0.125em #202226;
+  margin-bottom:0px;
+  font-weight: bold;
+}
+
+.break{
+  height: 1px;
+  background-color: #3ec303;
+  width:90%;
+  margin: 0 auto;
+  margin-bottom:1em;
+}
+
 
 /* universal */
 
