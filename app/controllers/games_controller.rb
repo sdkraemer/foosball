@@ -77,7 +77,7 @@ class GamesController < ApplicationController
  	def rematch
  		#all of this will be moved to a service object or in the model. Refactored soon
 
- 		lastgame = Game.includes(teams: [:positions]).order("positions.position_type desc").find_by_id(params[:id])
+ 		lastgame = Game.includes(teams: [:positions]).order("positions.position_type").find_by_id(params[:id])
  		lastredteam = lastgame.teams.where(color: 1).first
  		lastblueteam = lastgame.teams.where(color: 0).first
 
