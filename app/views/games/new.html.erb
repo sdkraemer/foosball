@@ -1,3 +1,10 @@
+<% if false %>
+  <% @game.teams.positions.each do |position| %>
+    position_type: <%= position.position_type %> player_id: <%= position.player_id %>
+  <% end %>
+<% end %>
+
+
 
 <%= form_for @game, url:{action: "create"}, html:{method: "post"} do |f| %>
     
@@ -16,7 +23,7 @@
                 <%= position_builder.hidden_field :position_type %>
                 <div class="col-md-1"><%= position_builder.object.position_type.humanize%>:</div> 
                 <div class="col-md-1">
-                  <%= position_builder.select(:player_id, options_for_select(@player.collect {|player| [player.firstname.humanize, player.id]})) %>
+                  <%= position_builder.select(:player_id, options_for_select(@player.collect {|player| [player.firstname.humanize, player.id]}, position_builder.object.player_id)) %>
                 </div>
                 
               </div>

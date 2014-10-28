@@ -22,6 +22,7 @@ class GamesController < ApplicationController
  	end
 
  	def new
+ 		#all of this will be moved to a service object or in the model. Refactored soon
  		@game = Game.new
 
  		#create the blue team
@@ -47,7 +48,11 @@ class GamesController < ApplicationController
  	end
 
  	def edit
- 		@game = Game.includes(teams: [positions: [:goals]]).order("teams.color, positions.position_type desc").find(params[:id])
+ 		#@game = Game.includes(teams: [positions: [:goals]]).order("teams.color, positions.position_type desc").find(params[:id])
+
+ 		@game = Game.includes(teams: [positions: [:goals]]).find(params[:id])
+ 		@redteam = @game.teams.where(color: 1).first
+ 		@blueteam = @game.teams.where(color: 0).first
  	end
 
  	def show
@@ -70,7 +75,67 @@ class GamesController < ApplicationController
  	end
 
  	def rematch
- 		redirect_to new_game_path
+ 		#all of this will be moved to a service object or in the model. Refactored soon
+
+ 		lastgame = Game.includes(teams: [:positions]).order("positions.position_type desc").find_by_id(params[:id])
+ 		lastredteam = lastgame.teams.where(color: 1).first
+ 		lastblueteam = lastgame.teams.where(color: 0).first
+
+ 		@game = Game.new
+
+ 		#create the blue team
+ 		blueteam = @game.teams.build
+ 		blueteam.color = "blue"
+ 		4.times do |i|
+ 			position = blueteam.positions.build
+ 			position.position_type = i
+
+ 			#shift players from goalie to striker. look at last game played
+ 			current_player_id = lastredteam.positions[i].player_id
+ 			l = (i-1)%4
+ 			#puts "i:#{i} l:#{l} current_player_id:#{current_player_id}"
+ 			while l != i
+ 				puts "loop #{l}"
+ 				if current_player_id != lastredteam.positions[l].player_id
+ 					#puts "found different player id #{lastredteam.positions[l].player_id}"
+ 					position.player_id = lastredteam.positions[l].player_id
+ 					break
+ 				end
+ 				l = (l-1)%4
+ 			end
+ 		end
+
+ 		blueteam.positions.each do |position| 
+ 			puts "position_type: #{position.position_type} player_id: #{position.player_id}"
+ 		end
+
+ 		#create the red team
+ 		redteam = @game.teams.build
+ 		redteam.color = "red"
+
+ 		4.times do |i|
+ 			position = redteam.positions.build
+ 			position.position_type = i
+
+ 			#shift players from goalie to striker. look at last game played
+ 			current_player_id = lastblueteam.positions[i].player_id
+ 			l = (i-1)%4
+ 			#puts "i:#{i} l:#{l} current_player_id:#{current_player_id}"
+ 			while l != i
+ 				puts "loop #{l}"
+ 				if current_player_id != lastblueteam.positions[l].player_id
+ 					#puts "found different player id #{lastblueteam.positions[l].player_id}"
+ 					position.player_id = lastblueteam.positions[l].player_id
+ 					break
+ 				end
+ 				l = (l-1)%4
+ 			end
+ 		end
+
+ 		@player = Player.all.order(:firstname)
+
+ 		#redirect_to new_game_path(@game)
+ 		render :action => :new
  	end
 
  	private
