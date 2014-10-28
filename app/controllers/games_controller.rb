@@ -77,9 +77,9 @@ class GamesController < ApplicationController
  	def rematch
  		#all of this will be moved to a service object or in the model. Refactored soon
 
- 		lastgame = Game.includes(teams: [:positions]).order("positions.position_type").find_by_id(params[:id])
- 		lastredteam = lastgame.teams.where(color: 1).first
- 		lastblueteam = lastgame.teams.where(color: 0).first
+ 		lastgame = Game.includes(teams: [:positions]).find_by_id(params[:id])
+ 		lastredteam = lastgame.teams.where(color: 1).first.positions.order("positions.position_type")
+ 		lastblueteam = lastgame.teams.where(color: 0).first.positions.order("positions.position_type")
 
  		@game = Game.new
 
@@ -91,14 +91,14 @@ class GamesController < ApplicationController
  			position.position_type = i
 
  			#shift players from goalie to striker. look at last game played
- 			current_player_id = lastredteam.positions[i].player_id
+ 			current_player_id = lastredteam[i].player_id
  			l = (i-1)%4
  			#puts "i:#{i} l:#{l} current_player_id:#{current_player_id}"
  			while l != i
  				puts "loop #{l}"
- 				if current_player_id != lastredteam.positions[l].player_id
+ 				if current_player_id != lastredteam[l].player_id
  					#puts "found different player id #{lastredteam.positions[l].player_id}"
- 					position.player_id = lastredteam.positions[l].player_id
+ 					position.player_id = lastredteam[l].player_id
  					break
  				end
  				l = (l-1)%4
@@ -118,14 +118,14 @@ class GamesController < ApplicationController
  			position.position_type = i
 
  			#shift players from goalie to striker. look at last game played
- 			current_player_id = lastblueteam.positions[i].player_id
+ 			current_player_id = lastblueteam[i].player_id
  			l = (i-1)%4
  			#puts "i:#{i} l:#{l} current_player_id:#{current_player_id}"
  			while l != i
  				puts "loop #{l}"
- 				if current_player_id != lastblueteam.positions[l].player_id
+ 				if current_player_id != lastblueteam[l].player_id
  					#puts "found different player id #{lastblueteam.positions[l].player_id}"
- 					position.player_id = lastblueteam.positions[l].player_id
+ 					position.player_id = lastblueteam[l].player_id
  					break
  				end
  				l = (l-1)%4
