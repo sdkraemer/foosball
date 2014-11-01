@@ -47,3 +47,12 @@ postgres:
 
 rails generate model Position position_type:integer team:references
 rails generate model Goals scored_at:timestamp team:references position:references
+
+select p.*
+where positions.id = self.id
+
+
+
+#compile assets
+set RAILS_ENV=development
+set RAILS_ENV=production
