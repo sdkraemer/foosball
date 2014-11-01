@@ -7,14 +7,6 @@ class GamesController < ApplicationController
  		#todo: Need to whitelist parameters. Did this to get it working initially
  		@game = Game.new(game_params)
  		if @game.save
- 			#Rails.logger.debug("My object: #{params[:game][:teams]}")
- 			#params[:game][:teams].each do |teams_attributes|
- 			#	Rails.logger.debug("My object: #{teams_attributes}")
- 			#	@game.teams.build(teams_attributes)
- 			#end
-
- 			#@game.teams.build(game_params[:teams_attributes][0])
-
  			redirect_to edit_game_path(@game)
  		else
  			render :new
@@ -31,6 +23,7 @@ class GamesController < ApplicationController
  		#@game = Game.includes(teams: [positions: [:goals]]).order("teams.color, positions.position_type desc").find(params[:id])
 
  		@game = Game.includes(teams: [positions: [:goals]]).find(params[:id])
+ 		@goals = @game.goals.order("created_at")
  		@redteam = @game.teams.red.first
  		@blueteam = @game.teams.blue.first
  	end

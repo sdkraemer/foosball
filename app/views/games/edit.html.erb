@@ -154,8 +154,8 @@
                 <% end %>
               </td>
               <td><%= position.player.firstname.humanize %></td>
-              <td><%= position.goals.where(quantity: 1).count %></td>
-              <td><%= position.goals.where(quantity: -1).count %></td>
+              <td><%= position.goals.scored_goal.count %></td>
+              <td><%= position.goals.own_goal.count %></td>
             </tr>
           <% end %>
           </tbody>
@@ -175,7 +175,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @game.goals.each_with_index do |goal, index| %>
+    <% @goals.each_with_index do |goal, index| %>
       <tr>
         <td><%= (index+1) %></td>
         <td><%= goal.player.firstname.humanize %></td>

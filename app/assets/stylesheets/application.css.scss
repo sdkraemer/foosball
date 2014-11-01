@@ -4,6 +4,7 @@ $navbar-default-link-color: #3ec303;
 $navbar-default-link-active-bg: #3ec303;
 $navbar-default-link-active-color: #ffffff;
 
+
 $navbar-default-link-active-bg: #3ec303;
 $navbar-default-link-color: #3ec303;
 $navbar-default-color: #3ec303;
@@ -33,6 +34,11 @@ $btn-primary-border: #2d8c01;
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+
+.foos-brand{
+  font-weight: 900;  
+}
 
 //Custom Foos app CSS
 .redteam{
