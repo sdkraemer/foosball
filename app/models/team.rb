@@ -8,6 +8,8 @@ class Team < ActiveRecord::Base
 
   scope :winner, -> {where(winner: true)}
   scope :loser, -> {where.not(winner: true)}
+  scope :blue, -> {where(color: 0)}
+  scope :red, -> {where(color: 1)}
 
   def get_goals_total
   	@game = self.game

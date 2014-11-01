@@ -23,27 +23,7 @@ class GamesController < ApplicationController
 
  	def new
  		#all of this will be moved to a service object or in the model. Refactored soon
- 		@game = Game.new
-
- 		#create the blue team
- 		blueteam = @game.teams.build
- 		blueteam.color = "blue"
- 		4.times{ blueteam.positions.build }
- 		blueteam.positions[3].position_type = :striker
- 		blueteam.positions[2].position_type = :midfield
- 		blueteam.positions[1].position_type = :defense
- 		blueteam.positions[0].position_type = :goalie
-
- 		#create the red team
- 		redteam = @game.teams.build
- 		redteam.color = "red"
- 		4.times{ redteam.positions.build}
-
- 		redteam.positions[3].position_type = :striker
- 		redteam.positions[2].position_type = :midfield
- 		redteam.positions[1].position_type = :defense
- 		redteam.positions[0].position_type = :goalie
-
+ 		@game = Game.new_game(params)
  		@player = Player.all.order(:firstname)
  	end
 
@@ -51,8 +31,8 @@ class GamesController < ApplicationController
  		#@game = Game.includes(teams: [positions: [:goals]]).order("teams.color, positions.position_type desc").find(params[:id])
 
  		@game = Game.includes(teams: [positions: [:goals]]).find(params[:id])
- 		@redteam = @game.teams.where(color: 1).first
- 		@blueteam = @game.teams.where(color: 0).first
+ 		@redteam = @game.teams.red.first
+ 		@blueteam = @game.teams.blue.first
  	end
 
  	def show
@@ -76,61 +56,8 @@ class GamesController < ApplicationController
 
  	def rematch
  		#all of this will be moved to a service object or in the model. Refactored soon
-
- 		lastgame = Game.includes(teams: [:positions]).find_by_id(params[:id])
- 		lastredteam = lastgame.teams.where(color: 1).first.positions.order("positions.position_type")
- 		lastblueteam = lastgame.teams.where(color: 0).first.positions.order("positions.position_type")
-
- 		@game = Game.new
-
- 		#create the blue team
- 		blueteam = @game.teams.build
- 		blueteam.color = "blue"
- 		4.times do |i|
- 			position = blueteam.positions.build
- 			position.position_type = i
-
- 			#shift players from goalie to striker. look at last game played
- 			current_player_id = lastredteam[i].player_id
- 			l = (i-1)%4
- 			#puts "i:#{i} l:#{l} current_player_id:#{current_player_id}"
- 			while l != i
- 				puts "loop #{l}"
- 				if current_player_id != lastredteam[l].player_id
- 					#puts "found different player id #{lastredteam.positions[l].player_id}"
- 					position.player_id = lastredteam[l].player_id
- 					break
- 				end
- 				l = (l-1)%4
- 			end
- 		end
-
- 		blueteam.positions.each do |position| 
- 			puts "position_type: #{position.position_type} player_id: #{position.player_id}"
- 		end
-
- 		#create the red team
- 		redteam = @game.teams.build
- 		redteam.color = "red"
-
- 		4.times do |i|
- 			position = redteam.positions.build
- 			position.position_type = i
-
- 			#shift players from goalie to striker. look at last game played
- 			current_player_id = lastblueteam[i].player_id
- 			l = (i-1)%4
- 			#puts "i:#{i} l:#{l} current_player_id:#{current_player_id}"
- 			while l != i
- 				puts "loop #{l}"
- 				if current_player_id != lastblueteam[l].player_id
- 					#puts "found different player id #{lastblueteam.positions[l].player_id}"
- 					position.player_id = lastblueteam[l].player_id
- 					break
- 				end
- 				l = (l-1)%4
- 			end
- 		end
+ 		#need to whitelist params
+ 		@game = Game.new_rematch_game(params)
 
  		@player = Player.all.order(:firstname)
 
