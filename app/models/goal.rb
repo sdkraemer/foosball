@@ -37,4 +37,12 @@ class Goal < ActiveRecord::Base
   		@game.save
   	end
   end
+
+  def is_own_goal
+    if self.quantity > 0 then 
+      false
+    else
+      true
+    end
+  end
 end

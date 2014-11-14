@@ -56,3 +56,4 @@ where positions.id = self.id
 #compile assets
 set RAILS_ENV=development
 set RAILS_ENV=production
+RAILS_ENV=production bundle exec rake assets:precompile

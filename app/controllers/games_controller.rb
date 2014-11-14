@@ -26,6 +26,7 @@ class GamesController < ApplicationController
  		@goals = @game.goals.order("created_at")
  		@redteam = @game.teams.red.first
  		@blueteam = @game.teams.blue.first
+ 		@positions = Position.position_types
  	end
 
  	def show

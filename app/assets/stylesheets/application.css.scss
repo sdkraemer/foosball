@@ -1,8 +1,8 @@
 $navbar-default-color: #3ec303;
 
-$navbar-default-link-color: #3ec303;
+/*$navbar-default-link-color: #3ec303;
 $navbar-default-link-active-bg: #3ec303;
-$navbar-default-link-active-color: #ffffff;
+$navbar-default-link-active-color: #ffffff;*/
 
 
 $navbar-default-link-active-bg: #3ec303;
@@ -10,20 +10,30 @@ $navbar-default-link-color: #3ec303;
 $navbar-default-color: #3ec303;
 $navbar-default-link-active-color: #ffffff;
 $navbar-default-bg: #ffffff;
+
+$btn-primary-color:#ffffff;
 $btn-primary-bg: #3ec303;
-$btn-primary-border: #2d8c01;
+//$btn-primary-border: #2d8c01;
+
+$btn-default-color:#3ec303;
+$btn-default-bg: #ffffff;
+//$btn-default-border: #2d8c01;
 
 /*$navbar-default-bg: #3ec303;
 $navbar-default-link-active-bg: #3ec303;
 $navbar-default-link-color: #ffffff;
 $navbar-default-color: #ffffff;
 $btn-primary-bg: #3ec303;
-$btn-primary-border: #2d8c01;
+$btn-primary-border: #2d8c01;*/
+
 
 .nav > li.active{
-  text-decoration: underline;
-  font-weight:bold;
-}*/
+  //text-decoration: underline;
+  font-weight:700;
+  -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.23);
+  -moz-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.23);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.23);
+}
 
 
 
@@ -36,9 +46,38 @@ $btn-primary-border: #2d8c01;
 @import "bootstrap";
 
 
+.panel{
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+}
+
+.btn{
+  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.30);
+  -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.30);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.30);
+}
+
+.scoreboard-score{
+  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.30);
+  -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.30);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.30);
+
+  font-size:20px;
+  font-weight:bold;
+  padding-left:1em;
+  padding-right:1em;
+  padding-top:.5em;
+  padding-bottom:.5em;
+  border-radius:5px;
+  margin:auto;
+  display:inline-block;
+}
+
 .foos-brand{
   font-weight: 900;  
 }
+
 
 //Custom Foos app CSS
 .redteam{
@@ -49,11 +88,24 @@ $btn-primary-border: #2d8c01;
   background-color: rgb(146, 162, 203) !important;
 }
 
-h1.foos{
+.foos{
   color:#3ec303;
   //text-shadow: 0 0.0625em 0.125em #202226;
   margin-bottom:0px;
   font-weight: bold;
+}
+
+.div-foos-title{
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+h1.foos{
+  font-size: 2.5em;
+}
+
+h2.foos{
+  font-size: 1.5em;
 }
 
 .break{

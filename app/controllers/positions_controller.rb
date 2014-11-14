@@ -6,7 +6,7 @@ class PositionsController < ApplicationController
 		goalscored.game_id = position_params[:game_id]
 		goalscored.team_id = position_params[:team_id]
 		if position_params[:quantity]
-			goalscored.quantity = position_params[:quantity].to_i
+			goalscored.quantity = position_params[:quantity].to_i ? position_params[:quantity].to_i : 1
 		end
 		if goalscored.save
 			@game = Game.find(position_params[:game_id])

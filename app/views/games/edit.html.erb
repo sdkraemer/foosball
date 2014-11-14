@@ -29,63 +29,101 @@
   }
 </style>
 
-<% if false %>
-<div>
+<script>
+  //temporary spot...will move into js file
+  game = {
+    //submits goal form. Appends 'own goal' checkbox value if checked to Goal's quantity
+    score_goal: function(btn){
+      var $btn = $(btn);
+      var $checkbox = $("#checkbox-owngoal");
+      var $form = $btn.closest("form");
+      var $goal_quantity = $form.find("input[name=quantity]")
+
+
+      if( $checkbox.is(":checked") ){
+        $goal_quantity.val($checkbox.val())
+      }
+
+      $btn.text("Saving...")
+      //submit form
+      $form.submit()
+    }
+  }
+</script>
+<center>
+<div class="div-foos-title"/>
   <center>
-    <h1 class="foos">Game In Progress</h1>
+    <h1 class="foos">Game View</h1>
     <div class="break"></div>
   </center>
 </div>
-<center>
-  <div style="min-width:200px;display:inline-block;text-align:center;padding:.25em;margin:.25em;">
-      <div class="panel panel-default">
+
+<% if @game.completed_at %>
+  <div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong><%= @game.teams.where(winner: true)[0].color.humanize %> Won!</strong> - Completed at:<%= @game.completed_at.to_s %>
+  </div>
+<% else %>
+  <% if false %>
+    <div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      Game In Progress...
+    </div>
+  <% end %>
+<% end %>
+
+<div class="btn-group">
+  <%= form_for @game, url: undo_game_path(@game), html: {method: "post"} do |f| %>
+    <% f.submit("Undo Last Goal", :class => 'btn btn-primary btn-sm') %>
+  <% end %>
+</div>
+
+
+<% if @game.completed_at %>
+  <div class="btn-group">
+    <%= form_for @game, url:{action: "rematch"}, html:{method: "post"} do |f| %>
+      <%= f.submit("Rematch", :class => 'btn btn-primary btn-sm') %>
+    <% end %>
+  </div>
+<% end %>
+
+<br>
+<br>
+
+
+
+  <div style="min-width:200px;display:inline-block;text-align:center;padding:.5em;margin:.25em;">
+      <div class="panel panel-default ">
         <div class="panel-body">
           <table style="width:100%;" class="table-padding">
             <tbody>
               <tr>
+                <td></td>
                 <td style="text-align:center;">
-                  <div style="background-color:#B22828;font-size:20px;font-weight:bold;padding:.25em;border-radius:5px;margin:auto;">
-                    <%= @redteam.color %>
+                  <span class="<%= @redteam.color%>team scoreboard-score">
                     <%= @redteam.get_goals_total %>
-                  </div>
+                  </span>
                 </td>
                 <td style="text-align:center;">
                   <div>Own Goal?</div>
-                  <input type="checkbox"/>
+                  <input type="checkbox" id="checkbox-owngoal" value="-1"/>
                 </td>
                 <td style="text-align:center;">
-                  <div style="background-color:#405896;font-size:20px;font-weight:bold;padding:.25em;border-radius:5px;margin:auto;">
-                    <%= @blueteam.color %>
+                  <span class="<%= @blueteam.color%>team scoreboard-score">
                     <%= @blueteam.get_goals_total %>
-                  </div>
+                  </span>
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <div class="break"></div>
                 </td>
               </tr>
-              <tr style="text-align:center;">
-                <td>
-                  <% if not @game.is_finished %>
-                    <%= form_for [@game, @redteam, @redteam.positions.where(position_type: "striker").first], url: score_game_team_position_path(@game, @redteam, @redteam.positions.where(position_type: "striker").first), html:{method: "post"} do |f|%>
-                      <%=  f.submit("Goal", :class => 'btn btn-primary') %>
-                    <% end %>
-                  <% end %>
-                </td>
-                <td><label>Striker</label></td>
-                <td><button type="button" class="btn btn-primary"/>Goal</button></td>
-              </tr>
-              <tr style="text-align:center;">
-                <td><button type="button" class="btn btn-primary"/>Goal</button></td>
-                <td><label>Midfield</label></td>
-                <td><button type="button" class="btn btn-primary"/>Goal</button></td>
-              </tr>
-              <tr style="text-align:center;">
-                <td><button type="button" class="btn btn-primary"/>Goal</button></td>
-                <td><label>Defense</label></td>
-                <td><button type="button" class="btn btn-primary"/>Goal</button></td>
-              </tr>
-              <tr style="text-align:center;">
-                <td><button type="button" class="btn btn-primary"/>Goal</button></td>
-                <td style="text-align:center;"><label>Goalie</label></td>
-                <td><button type="button" class="btn btn-primary"/>Goal</button></td>
-              </tr>
+
+            <% @positions.each do |position, position_type| %>
+              <%= render "position_row", :game => @game, :redteam => @red_team, :blueteam => @blueteam, :position => position, :position_type => position_type %>
+            <% end %>
             </tbody>
           </table>
         </div>
@@ -93,96 +131,101 @@
     </div>
   </div>
 </center>
-<% end %>
 
 
 
 
 
-<%= form_for @game, url: undo_game_path(@game), html: {method: "post"} do |f| %>
-  <% f.submit("Undo Last Goal", :class => 'btn btn-primary btn-sm') %>
-<% end %>
-</br>
-<% if @game.completed_at %>
-  <%= form_for @game, url:{action: "rematch"}, html:{method: "post"} do |f| %>
-    <%= f.submit("Rematch", :class => 'btn btn-primary btn-sm') %>
-  <% end %>
-<% end %>
-<br>
-<% if @game.completed_at %>
-  <h3><%= @game.teams.where(winner: true)[0].color.humanize %> Wins!</h3>
-  Completed at:<%= @game.completed_at.to_s %><br>
-
-<% end %>
 
 
-<% @game.teams.each do |team| %>
-  <div class="panel panel-default">
-    <div class="panel-heading <%= team.color%>team">
-      <h3 class="panel-title"> Team <%= team.color.humanize %>:<%= team.get_goals_total %></h3>
-    </div>
-    <div class="panel-body">
-      <div class="table-responsive">
-        <table class="table table-condensed">
-          <thead>
-            <tr>
-              <th>Position</th>
-              <th></th>
-              <th></th>
-              <th>Player</th>
-              <th>Goals Scored</th>
-              <th>Own Goals</th>
-            </tr>
-          </thead>
-          <tbody>
-          <% team.positions.each do |position| %>
-            <tr>
-              <td><%= position.position_type.humanize %></td> 
-              <td>
-                <% if not @game.is_finished %>
-                  <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
-                    <%=  f.submit("Goal Scored", :class => 'btn btn-default pull-left btn-sm') %>
+<% if false %>
+  <% @game.teams.each do |team| %>
+    <div class="panel panel-default">
+      <div class="panel-heading <%= team.color%>team">
+        <h3 class="panel-title"> Team <%= team.color.humanize %>:<%= team.get_goals_total %></h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Position</th>
+                <th></th>
+                <th></th>
+                <th>Player</th>
+                <th>Goals Scored</th>
+                <th>Own Goals</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% team.positions.each do |position| %>
+              <tr>
+                <td><%= position.position_type.humanize %></td> 
+                <td>
+                  <% if @game.is_in_progress %>
+                    <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
+                      <%=  f.submit("Goal Scored", :class => 'btn btn-default pull-left btn-sm') %>
+                    <% end %>
                   <% end %>
-                <% end %>
-              </td>
-              <td>
-                <% if not @game.is_finished %>
-                  <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
-                    <%= hidden_field_tag :quantity, "-1" %>
-                    <%=  f.submit("Own Goal", :class => 'btn btn-default btn-sm') %>
+                </td>
+                <td>
+                  <% if not @game.is_finished %>
+                    <%= form_for [@game, team, position], url: score_game_team_position_path(@game, team, position), html:{method: "post"} do |f|%>
+                      <%= hidden_field_tag :quantity, "-1" %>
+                      <%=  f.submit("Own Goal", :class => 'btn btn-default btn-sm') %>
+                    <% end %>
                   <% end %>
-                <% end %>
-              </td>
-              <td><%= position.player.firstname.humanize %></td>
-              <td><%= position.goals.scored_goal.count %></td>
-              <td><%= position.goals.own_goal.count %></td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
+                </td>
+                <td><%= position.player.firstname.humanize %></td>
+                <td><%= position.goals.scored_goal.count %></td>
+                <td><%= position.goals.own_goal.count %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 
-<h3>Goals</h3>
-<table class="table table-condensed">
-  <thead>
-    <tr>
-      <td>Goal #</td>
-      <td>Player</td>
-      <td>Scored At</td>
-    </tr>
-  </thead>
-  <tbody>
-    <% @goals.each_with_index do |goal, index| %>
+<center>
+<div class="div-foos-title">
+  <center>
+    <h2 class="foos">Goals Scored</h2>
+    <div class="break"></div>
+  </center>
+</div>
+<span style="width:auto;">
+  <table class="table table-hover table-condensed" style="width:auto;">
+    <thead>
       <tr>
-        <td><%= (index+1) %></td>
-        <td><%= goal.player.firstname.humanize %></td>
-        <td><%= goal.created_at %></td>
+        <td>Goal #</td>
+        <td>Player</td>
+        <td>Scored At</td>
+        <td>Comments</td>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @goals.each_with_index do |goal, index| %>
+      <% if goal.is_own_goal %>
+        <tr class="danger">
+      <% else %>
+        <tr>
+      <% end %>
+          <td><%= (index+1) %></td>
+          <td><%= goal.player.firstname.humanize %></td>
+          <td><%= goal.created_at %></td>
+          <td>
+          <% if goal.is_own_goal %>
+            (Own Goal)
+          <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</span>
+</center>
 
 

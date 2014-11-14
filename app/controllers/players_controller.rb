@@ -4,12 +4,21 @@ class PlayersController < ApplicationController
   end
 
 	def index
+		@player = Player.new
 		@players = Player.all
 	end
 
   def create
   	@player = Player.new(player_params)
  
+  	#if @player.save
+		#	format.html { redirect_to edit_player_path(@player), notice: 'Player created successfully.' }
+		#	format.json { render json: @player }
+		#	format.js { render action: "show", status: :created, location: @player}
+		#else
+		#	format.html { redirect_to edit_player_path(@player), notice: 'Player created successfully.' }
+		#end
+
 		if @player.save
 			redirect_to edit_player_path(@player)
 		else

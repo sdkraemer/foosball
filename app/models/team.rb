@@ -20,4 +20,16 @@ class Team < ActiveRecord::Base
   	other_teams_own_goals = other_team.goals.where(quantity: -1)
   	return ourgoals.count + other_teams_own_goals.count
   end
+
+  def self.new_team(game)
+    team = game.teams.build
+
+    4.times{ team.positions.build }
+    team.positions[3].position_type = :striker
+    team.positions[2].position_type = :midfield
+    team.positions[1].position_type = :defense
+    team.positions[0].position_type = :goalie
+
+    return team
+  end
 end
