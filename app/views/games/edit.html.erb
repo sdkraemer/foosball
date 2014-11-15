@@ -74,7 +74,7 @@
 
 <div class="btn-group">
   <%= form_for @game, url: undo_game_path(@game), html: {method: "post"} do |f| %>
-    <% f.submit("Undo Last Goal", :class => 'btn btn-primary btn-sm') %>
+    <% f.submit("Undo Last Goal", :class => 'btn btn-default btn-sm') %>
   <% end %>
 </div>
 
@@ -82,7 +82,7 @@
 <% if @game.completed_at %>
   <div class="btn-group">
     <%= form_for @game, url:{action: "rematch"}, html:{method: "post"} do |f| %>
-      <%= f.submit("Rematch", :class => 'btn btn-primary btn-sm') %>
+      <%= f.submit("Rematch", :class => 'btn btn-default btn-sm') %>
     <% end %>
   </div>
 <% end %>
