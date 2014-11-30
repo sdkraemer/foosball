@@ -57,3 +57,6 @@ where positions.id = self.id
 set RAILS_ENV=development
 set RAILS_ENV=production
 rake assets:precompile
+
+#check heroku logs
+heroku logs

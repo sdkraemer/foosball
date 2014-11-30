@@ -59,6 +59,12 @@ class GamesController < ApplicationController
  		render :action => :new
  	end
 
+ 	def player_dropdown
+ 		selected_players = Player.find(player_params[id])
+ 		available_players = Player.not(selected_players)
+ 		render "games/player_dropdown"
+ 	end
+
  	private
 	  def game_params
 	    params.require(:game).permit( :id, :teams_attributes => [:id, :color, :positions_attributes => [:id, :player_id, :position_type]])
@@ -66,5 +72,9 @@ class GamesController < ApplicationController
 
 	  def undo_params
 	  	params.permit(:id)
+	  end
+
+	  def player_params
+	  	params.require(:player).permit(:id)
 	  end
 end

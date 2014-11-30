@@ -1,11 +1,34 @@
-<% if false %>
-  <% @game.teams.positions.each do |position| %>
-    position_type: <%= position.position_type %> player_id: <%= position.player_id %>
-  <% end %>
-<% end %>
+<script type="text/javascript">
+  new_game = {
+    all_players : [],
+    init: function(){
+      console.log("init");
+      <% @player.each do |player|%>
+        new_game.all_players.push(<%= player.id %>)
+      <% end %>
+      console.dir(new_game.all_players)
+    },
+    add_player_row: function(){
+      //todo
+      //create form around player drop downs in modal
+      //make ajax call to new controller and action
+      //have controller action render player_dropdown partial with list of already selected player in form, and passing
+      //Player.all
 
+      //game controller action: player_dropdown      
 
+    }
+  }
 
+  $(function(){
+    console.log("loaded and ready!");
+    new_game.init();
+  })
+</script>
+
+<%= link_to "Setup Game", '#' , class: "btn btn-large btn-default", data: { :toggle => "modal", :target => "#modal-playerpicker"} %>
+<br>
+<br>
 <%= form_for @game, url:{action: "create"}, html:{method: "post"} do |f| %>
     
 
@@ -38,3 +61,23 @@
   <br>
   <br>
 <% end %>
+
+
+<!-- Team GeneratorModal -->
+<div class="modal fade" id="modal-playerpicker" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Select the Competitors!</h4>
+      </div>
+      <div class="modal-body">
+        <%= render "player_dropdown", locals: {selected_players: []} %>
+      </div>
+      <div class="modal-footer">
+        <%= link_to "Add a Player", '#' , class: "btn btn-large btn-default", onclick: "new_game.add_player_row()" %>
+        <%= link_to "Lets Go!", '#' , class: "btn btn-large btn-primary", data: {} %>
+      </div>
+    </div>
+  </div>
+</div>
