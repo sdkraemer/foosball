@@ -1,8 +1,11 @@
 source 'https://rubygems.org'
-ruby '1.9.3'
+#ruby '1.9.3'
+ruby '2.0.0'
 #ruby-gemset=railstutorial_rails_4_0
 
-gem 'rails', '~> 4.1.6'
+gem 'rails', '~> 4.1'
+gem 'pg'
+#  gem 'pg', '0.17.1'
 gem 'tzinfo-data'
 gem 'execjs'
 
@@ -13,7 +16,6 @@ gem 'sass-rails', '>= 3.2'
 group :development, :test do 
 	gem 'rspec-rails' 
 	gem 'factory_girl_rails'
-	gem 'pg', '0.17.1'
 end 
 
 group :test do 
@@ -48,7 +50,6 @@ group :doc do
 end
 
 group :production do
-  gem 'pg', '0.17.1'
   gem 'rails_12factor', '0.0.2'
 end
 
