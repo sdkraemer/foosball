@@ -60,9 +60,9 @@ class GamesController < ApplicationController
  	end
 
  	def player_dropdown
- 		selected_players = Player.find(player_params[id])
- 		available_players = Player.not(selected_players)
- 		render "games/player_dropdown"
+ 		#selected_players = Player.find(player_params[id])
+ 		#available_players = Player.not(selected_players)
+ 		render partial: "games/player_dropdown", locals: {selected_players: []}
  	end
 
  	private
