@@ -7,7 +7,8 @@ FoosballApp::Application.routes.draw do
 
   resources :players
   get 'games/recent_games'
-  resources :games do 
+  get 'games/player_dropdown'
+  resources :games do
     member do 
       post :undo
       post :rematch

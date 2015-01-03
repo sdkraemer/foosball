@@ -15,7 +15,17 @@
       //have controller action render player_dropdown partial with list of already selected player in form, and passing
       //Player.all
 
-      //game controller action: player_dropdown      
+      //game controller action: player_dropdown
+      $.ajax({
+        url: "player_dropdown",
+        dataType: "html",
+        success: function(html){
+          $("#div-playerlist").append(html);
+        },
+        error: function(){
+          alert("error")
+        }
+      });     
 
     }
   }
@@ -72,7 +82,9 @@
         <h4 class="modal-title" id="myModalLabel">Select the Competitors!</h4>
       </div>
       <div class="modal-body">
-        <%= render "player_dropdown", locals: {selected_players: []} %>
+        <div id="div-playerlist">
+          <%= render "player_dropdown", locals: {selected_players: []} %>
+        </div>
       </div>
       <div class="modal-footer">
         <%= link_to "Add a Player", '#' , class: "btn btn-large btn-default", onclick: "new_game.add_player_row()" %>
