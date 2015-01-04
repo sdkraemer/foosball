@@ -1,13 +1,5 @@
 <script type="text/javascript">
-  new_game = {
-    all_players : [],
-    init: function(){
-      console.log("init");
-      <% @player.each do |player|%>
-        new_game.all_players.push(<%= player.id %>)
-      <% end %>
-      console.dir(new_game.all_players)
-    },
+  game_generator = {
     add_player_row: function(){
       //todo
       //create form around player drop downs in modal
@@ -17,23 +9,22 @@
 
       //game controller action: player_dropdown
       $.ajax({
-        url: "player_dropdown",
+        url: "<%= games_player_dropdown_path %>",
+        data: $("#form-team-generator").serialize(),
         dataType: "html",
         success: function(html){
           $("#div-playerlist").append(html);
         },
         error: function(){
-          alert("error")
+          alert("Unexpected error occurred.")
         }
       });     
 
+    },
+    generate_teams: function(){
+      $("#form-team-generator").submit();
     }
   }
-
-  $(function(){
-    console.log("loaded and ready!");
-    new_game.init();
-  })
 </script>
 
 <%= link_to "Setup Game", '#' , class: "btn btn-large btn-default", data: { :toggle => "modal", :target => "#modal-playerpicker"} %>
@@ -56,7 +47,11 @@
                 <%= position_builder.hidden_field :position_type %>
                 <div class="col-md-1"><%= position_builder.object.position_type.humanize%>:</div> 
                 <div class="col-md-1">
-                  <%= position_builder.select(:player_id, options_for_select(@player.collect {|player| [player.firstname.humanize, player.id]}, position_builder.object.player_id)) %>
+                  <% if team_builder.object.color == "blue" %>
+                    <%= position_builder.select(:player_id, options_for_select(@blue_team_players.collect {|player| [player.firstname.humanize, player.id]}, position_builder.object.player_id)) %>
+                  <% else %>
+                    <%= position_builder.select(:player_id, options_for_select(@red_team_players.collect {|player| [player.firstname.humanize, player.id]}, position_builder.object.player_id)) %>
+                  <% end %>
                 </div>
                 
               </div>
@@ -82,13 +77,15 @@
         <h4 class="modal-title" id="myModalLabel">Select the Competitors!</h4>
       </div>
       <div class="modal-body">
-        <div id="div-playerlist">
-          <%= render "player_dropdown", locals: {selected_players: []} %>
-        </div>
+        <%= form_tag(generate_teams_new_game_path, {id: "form-team-generator"}) do %>
+          <div id="div-playerlist" class="container-fluid">
+            <%= render partial: "games/player_dropdown", locals: {selected_players: @players } %>
+          </div>
+        <% end %>
       </div>
       <div class="modal-footer">
-        <%= link_to "Add a Player", '#' , class: "btn btn-large btn-default", onclick: "new_game.add_player_row()" %>
-        <%= link_to "Lets Go!", '#' , class: "btn btn-large btn-primary", data: {} %>
+        <%= link_to "Add a Player", '#' , class: "btn btn-large btn-default", onclick: "game_generator.add_player_row()" %>
+        <%= link_to "Lets Go!", '#' , class: "btn btn-large btn-primary", onclick: "game_generator.generate_teams()" %>
       </div>
     </div>
   </div>

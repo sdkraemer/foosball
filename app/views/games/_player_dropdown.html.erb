@@ -1,1 +1,4 @@
-<div>Im a player drop down!</div>
+<div class="row">
+	<%# select_tag "player_id[]", options_from_collection_for_select(selected_players, "id", "firstname"), id: nil %>
+	<%= select_tag "player_id[]", options_for_select(selected_players.collect{|player| [player.firstname.humanize, player.id]}), id: nil %>
+</div>

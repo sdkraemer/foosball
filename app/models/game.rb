@@ -82,10 +82,29 @@ class Game < ActiveRecord::Base
  		return rematch_game
 	end
 
+	#Passed list of players as array of Player objects who are participating in the game
+	#returns two teams in an array
+	def self.generate_random_teams(players)
+		team_index = 0
+		#array of two team arrays
+		teams = [[],[]]
+
+ 		while players.size() > 0
+ 			#grab a random player index
+ 			random_index = rand(0..(players.size()-1))
+ 			#remove player from available players
+ 			current_player = players.delete_at(random_index)
+ 			#stick player into current team
+ 			teams[team_index%teams.size()].push(current_player)
+ 			team_index += 1
+ 		end
+
+ 		return teams
+	end
+
 	def winning_team
 		winningteam = self.teams.where(winner: true)
 	end
-
 
 	def undo_last_goal
 		if self.completed_at != nil
