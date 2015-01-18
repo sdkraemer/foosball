@@ -1,32 +1,3 @@
-<script type="text/javascript">
-  game_generator = {
-    add_player_row: function(){
-      //todo
-      //create form around player drop downs in modal
-      //make ajax call to new controller and action
-      //have controller action render player_dropdown partial with list of already selected player in form, and passing
-      //Player.all
-
-      //game controller action: player_dropdown
-      $.ajax({
-        url: "<%= games_player_dropdown_path %>",
-        data: $("#form-team-generator").serialize(),
-        dataType: "html",
-        success: function(html){
-          $("#div-playerlist").append(html);
-        },
-        error: function(){
-          alert("Unexpected error occurred.")
-        }
-      });     
-
-    },
-    generate_teams: function(){
-      $("#form-team-generator").submit();
-    }
-  }
-</script>
-
 <%= link_to "Setup Game", '#' , class: "btn btn-large btn-default", data: { :toggle => "modal", :target => "#modal-playerpicker"} %>
 <br>
 <br>

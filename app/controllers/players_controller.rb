@@ -38,6 +38,11 @@ class PlayersController < ApplicationController
 
   def edit
     @player = Player.find(params[:id])
+    @last_ten_games = Game.completed.distinct.joins(:teams).joins(:positions).where(:positions => {player_id: @player.id}).order(created_at: :desc).limit(10)
+    last_ten_game_ids = @last_ten_games.map(&:id)
+
+    @loser_ten = Team.distinct.loser.joins(:positions).where(:positions => {player_id: @player.id}, :teams => {game_id: last_ten_game_ids}).count
+    @winner_ten = Team.distinct.winner.joins(:positions).where(:positions => {player_id: @player.id}, :teams => {game_id: last_ten_game_ids}).count
   end
 
   def show

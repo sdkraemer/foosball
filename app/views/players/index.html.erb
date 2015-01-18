@@ -20,7 +20,7 @@
 	<% @players.each do |player| %>
 		<tr>
 			<td>
-				<%= button_to "Edit", edit_player_path(player), :method => "get", :class => 'btn btn-default btn-sm' %>
+				<%= button_to "View Player", edit_player_path(player), :method => "get", :class => 'btn btn-default btn-sm' %>
 			</td>
 			<td><%= player.username %></td>
 			<td><%= player.firstname %></td>

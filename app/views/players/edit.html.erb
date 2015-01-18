@@ -1,40 +1,80 @@
 <%= button_to "Back", players_path, :method => "get", :class => 'btn btn-default btn-sm' %>
+<br>
 
-<%= form_for :player, url: player_path(@player), method: :patch do |f| %>
 
-	<% if @player.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(@player.errors.count, "error") %> prohibited
-        this article from being saved:
-      </h2>
-      <ul>
-        <% @player.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div class="panel panel-default">
+  <div class="panel-heading">Player Form</div>
+  <div class="panel-body">
+    <%= form_for :player, url: player_path(@player), method: :patch do |f| %>
 
-  <div class="form-group">
-    <%= f.label :username, 'User Name' %><br>
-    <%= f.text_field :username %>
+      <% if @player.errors.any? %>
+        <div id="error_explanation">
+          <h2>
+            <%= pluralize(@player.errors.count, "error") %> prohibited
+            this article from being saved:
+          </h2>
+          <ul>
+            <% @player.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :username, 'User Name' %><br>
+        <%= f.text_field :username %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :firstname, 'First Name' %><br>
+        <%= f.text_field :firstname %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :lastname, 'Last Name' %><br>
+        <%= f.text_field :lastname %>
+      </div>
+     
+     
+      <div class="form-group">
+        <%= f.submit "Update Player", class: 'btn btn-primary btn-sm'%>
+      </div>
+    <% end %>
   </div>
+</div>
 
-  <div class="form-group">
-    <%= f.label :firstname, 'First Name' %><br>
-    <%= f.text_field :firstname %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :lastname, 'Last Name' %><br>
-    <%= f.text_field :lastname %>
-  </div>
- 
- 
-  <div class="form-group">
-    <%= f.submit "Update Player", class: 'btn btn-primary btn-sm'%>
-  </div>
+<% if @player.persisted? %>
+  <center>
+    <h2 class="foos">Player Statistics</h2>
+    <div class="break"></div>
+  </center>
+  Record Last 10 Games: <%= @winner_ten %> - <%= @loser_ten %><br>
+  <table class="table table-hover table-condensed" style="width:auto;">
+    <thead>
+      <tr>
+        <td>Game ID</td>
+        <td>Completed At</td>
+        <td>Won or Lost?</td>
+      </tr>
+    </thead>
+    <tbody>
+    <% @last_ten_games.each do |game| %>
+      <tr>
+        <td><%= game.id %></td>
+        <td><%= game.completed_at %></td>
+      <% if game.did_player_win?(@player) %>
+        <td class="success">Won</td>
+      <% else %>
+        <td class="danger">Lost</td>
+      <% end %>
+        
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 <% end %>
+
+    
 
 

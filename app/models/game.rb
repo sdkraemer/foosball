@@ -10,6 +10,8 @@
 class Game < ActiveRecord::Base
 	has_many :teams, :dependent => :destroy
 	has_many :goals, :dependent => :destroy
+	has_many :positions, :through => :teams
+	has_many :players, :through => :positions
 
 	validate :teams_cannot_be_more_than_two
 	#, :game_cannot_be_started_without_two_teams
@@ -120,6 +122,22 @@ class Game < ActiveRecord::Base
  		lastgoal.delete
 	end
 
+	def get_game_score_at_goal(goal)
+		blue_team = self.teams.blue.first
+		red_team = self.teams.red.first
+
+		blue_goals = blue_team.goals.scored_goal.where(["created_at <= ?", goal.created_at])
+		red_goals = red_team.goals.scored_goal.where(["created_at <= ?", goal.created_at])
+		red_own_goals = red_team.goals.own_goal.where(["created_at <= ?", goal.created_at])
+		blue_own_goals = blue_team.goals.own_goal.where(["created_at <= ?", goal.created_at])
+
+		score = {"blue_score" => blue_goals.count+red_own_goals.count, "red_score" => red_goals.count+blue_own_goals.count}
+
+		#MyTable.where(["created_at < ?", 2.days.ago])
+
+		return score
+	end
+
 
 	#the following methods have the potential to be moved into a decorator
 	def is_finished
@@ -136,6 +154,12 @@ class Game < ActiveRecord::Base
 		else
 			false
 		end
+	end
+
+	#give player, returns true or false for if the player was on the winning team of the game
+	def did_player_win?(player)
+		winner_count = self.teams.winner.joins(:positions).where(:positions => {player_id: player.id}).count
+		return winner_count > 0
 	end
 
 

@@ -38,11 +38,19 @@ class Goal < ActiveRecord::Base
   	end
   end
 
-  def is_own_goal
+  def own_goal?
     if self.quantity > 0 then 
       false
     else
       true
     end
+  end
+
+  def blue_goal?
+    return (self.team.blue? && !self.own_goal?) || (self.team.red? && self.own_goal?)
+  end
+
+  def red_goal?
+    return (self.team.red? && self.quantity > 0) || (self.team.blue? && self.own_goal?)
   end
 end

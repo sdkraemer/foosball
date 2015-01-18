@@ -32,4 +32,5 @@ class Team < ActiveRecord::Base
 
     return team
   end
+
 end
