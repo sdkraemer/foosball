@@ -18,6 +18,7 @@
         <th>Player</th>
         <th>Goals Scored</th>
         <th>GPG</th>
+        <th>GPS</th>
         <th>Record</th>
         <th>Win %</th>
       </tr>
@@ -28,6 +29,7 @@
         <td><%= player.firstname.humanize %></td>
         <td><%= player.total_goals %></td>
         <td><%= number_with_precision(player.goals_per_game, precision: 2) %></td>
+        <td><%= number_with_precision(player.goals_per_stick, precision: 2) %></td>
         <td><%= player.player_wins %> - <%= player.player_losses %></td>
         <td><%= player.win_pct.to_i %></td>
       </tr>
