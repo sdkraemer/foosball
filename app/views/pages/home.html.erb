@@ -31,7 +31,7 @@
         <td><%= number_with_precision(player.goals_per_game, precision: 2) %></td>
         <td><%= number_with_precision(player.goals_per_stick, precision: 2) %></td>
         <td><%= player.player_wins %> - <%= player.player_losses %></td>
-        <td><%= player.win_pct.to_i %></td>
+        <td><%= player.win_percentage.to_i %></td>
       </tr>
     <% end %>
     </tbody>

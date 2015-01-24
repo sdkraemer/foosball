@@ -28,7 +28,7 @@ class Player < ActiveRecord::Base
 	end
 
 	def player_games
-		@player_games ||= Game.uniq.completed.joins(:teams).joins(:positions).where(:positions => {:player_id => self.id})
+		@player_games ||= Game.uniq.completed.joins(:teams).joins(:positions).where("teams.id = positions.team_id").where(:positions => {:player_id => self.id})
 
 		#@player_games ||= Game.completed.joins(:teams).select("games.id").where(:teams => {:id => Position.select(:team_id).uniq.where(:player_id => self.id)} )
 	end
@@ -59,12 +59,10 @@ class Player < ActiveRecord::Base
 		@player_losses ||= player_games.merge(Team.loser).count
 	end
 
-	def win_pct
-		games_count = player_games.count("games.id")
-		winner_games_count = player_wins
+	def win_percentage
 
-		if games_count > 0
-			((winner_games_count*1.0)/games_count)*100
+		if player_games.count > 0
+			((player_wins*1.0)/player_games.count)*100
 		else
 			0
 		end
