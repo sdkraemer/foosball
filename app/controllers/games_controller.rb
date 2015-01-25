@@ -83,7 +83,10 @@ class GamesController < ApplicationController
  		teams = Game.generate_random_teams(selected_players)
 
  		@blue_team_players = Player.find(teams[0])
+ 		@blue_team_names = @blue_team_players.map(&:username).map{|s| s.humanize()}.join(", ")
+
  		@red_team_players = Player.find(teams[1])
+ 		@red_team_names = @red_team_players.map(&:username).map{|s| s.humanize()}.join(", ")
 
  		@game = Game.new_game(params)
  		@players = Player.all.order(:firstname)

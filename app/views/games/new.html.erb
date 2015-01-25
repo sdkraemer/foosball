@@ -8,7 +8,14 @@
     <%= f.fields_for :teams do |team_builder| %>
       <div class="panel panel-default">
         <div class="panel-heading <%= team_builder.object.color%>team">
-          <h3 class="panel-title"> Team <%= team_builder.object.color.humanize %></h3>
+          <h3 class="panel-title"> 
+            Team <%= team_builder.object.color.humanize %> 
+            <% if team_builder.object.color == "blue" && @blue_team_names %>
+              <%= ": "+@blue_team_names %>
+            <% elsif team_builder.object.color == "red" && @red_team_names %>
+              <%= ": "+@red_team_names %>
+            <% end %>
+          </h3>
         </div>
         <div class="panel-body">
           <%= team_builder.hidden_field :color %>
