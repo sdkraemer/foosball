@@ -26,8 +26,7 @@ class GamesController < ApplicationController
  	def edit
  		#@game = Game.includes(teams: [positions: [:goals]]).order("teams.color, positions.position_type desc").find(params[:id])
 
- 		@game = Game.includes(teams: [positions: [:goals]]).find(params[:id])
- 		@goals = @game.goals.order("created_at")
+ 		@game = Game.includes(teams: [positions: [:goals]]).find(params[:id]).decorate
  		@redteam = @game.teams.red.first
  		@blueteam = @game.teams.blue.first
  		@positions = Position.position_types
@@ -48,8 +47,10 @@ class GamesController < ApplicationController
  		redirect_to edit_game_path(game)
  	end
 
- 	def recent_games
- 		@games = Game.includes(:teams).order("created_at desc").first(10)
+ 	def index
+ 		#@games = Game.includes(:teams).order("created_at desc").paginate(:page => params[:page], :per_page => 1)
+ 		#@games = GameDecorator.decorate_collection(Game.includes(:teams).order("created_at desc").paginate(:page => params[:page], :per_page => 10))
+ 		@games = GameDecorator.decorate_collection(Game.includes(:teams).order("created_at desc").paginate(:page => params[:page], :per_page => 10))
  	end
 
  	def rematch
@@ -77,6 +78,7 @@ class GamesController < ApplicationController
  		render partial: "games/player_dropdown", locals: {selected_players: available_players}
  	end
 
+ 	#need to move this to model or service object
  	def generate_teams
  		#seems redundant..just want to make sure I have actual players. Could remove this and stick with what is passed in player_id params
  		selected_players = Player.find(player_params[:player_id]).map(&:id)

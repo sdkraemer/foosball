@@ -33,6 +33,10 @@ module FoosballApp
 
     config.assets.precompile += %w( pages.css )
 
+    config.autoload_paths += %W(
+      #{config.root}/app/presenters
+    )
+
     config.time_zone = 'Arizona'
   end
 end

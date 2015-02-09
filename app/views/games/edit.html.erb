@@ -1,24 +1,21 @@
 
 <center>
   <div class="div-foos-title"/>
-    <center>
-      <h1 class="foos">Game View</h1>
-      <div class="break"></div>
-    </center>
+    <h1 class="foos">Game View</h1>
+    <div class="break"></div>
   </div>
 
-  <% if @game.completed_at %>
+  <% if @game.completed_at? %>
     <div class="alert alert-info alert-dismissible" role="alert">
       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      <strong><%= @game.teams.where(winner: true)[0].color.humanize %> Won!</strong> - Completed at:<%= @game.completed_at.to_s %>
+      <strong><%= @game.winning_team_color %> Won!</strong> - Completed at:<%= @game.completed_at.to_s %>
     </div>
-  <% else %>
-    <% if false %>
-      <div class="alert alert-warning alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        Game In Progress...
-      </div>
-    <% end %>
+
+    <div class="btn-group">
+      <%= form_for @game, url:{action: "rematch"}, html:{method: "post"} do |f| %>
+        <%= f.submit("Rematch", :class => 'btn btn-default btn-sm') %>
+      <% end %>
+    </div>
   <% end %>
 
   <div class="btn-group">
@@ -27,99 +24,82 @@
     <% end %>
   </div>
 
-
-  <% if @game.completed_at %>
-    <div class="btn-group">
-      <%= form_for @game, url:{action: "rematch"}, html:{method: "post"} do |f| %>
-        <%= f.submit("Rematch", :class => 'btn btn-default btn-sm') %>
-      <% end %>
-    </div>
-  <% end %>
-
   <br>
   <br>
-
 
   <div style="min-width:200px;display:inline-block;text-align:center;padding:.5em;margin:.25em;">
-      <div class="panel panel-default ">
-        <div class="panel-body">
-          <table style="width:100%;" class="table-padding">
-            <tbody>
-              <tr>
-                <td></td>
-                <td style="text-align:center;">
-                  <span class="<%= @redteam.color%>team scoreboard-score">
-                    <%= @redteam.get_goals_total %>
-                  </span>
-                </td>
-                <td style="text-align:center;">
-                  <div>Own Goal?</div>
-                  <input type="checkbox" id="checkbox-owngoal" value="-1"/>
-                </td>
-                <td style="text-align:center;">
-                  <span class="<%= @blueteam.color%>team scoreboard-score">
-                    <%= @blueteam.get_goals_total %>
-                  </span>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td colspan="5">
-                  <div class="break"></div>
-                </td>
-              </tr>
+    <div class="panel panel-default ">
+      <div class="panel-body">
+        <table style="width:100%;" class="table-padding">
+          <tbody>
+            <tr>
+              <td></td>
+              <td style="text-align:center;">
+                <span class="<%= @redteam.color %>team scoreboard-score">
+                  <%= @redteam.get_goals_total %>
+                </span>
+              </td>
+              <td style="text-align:center;">
+                <div>Own Goal?</div>
+                <input type="checkbox" id="checkbox-owngoal" value="-1"/>
+              </td>
+              <td style="text-align:center;">
+                <span class="<%= @blueteam.color %>team scoreboard-score">
+                  <%= @blueteam.get_goals_total %>
+                </span>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colspan="5">
+                <div class="break"></div>
+              </td>
+            </tr>
 
-            <% @positions.each do |position, position_type| %>
-              <%= render "position_row", :game => @game, :redteam => @red_team, :blueteam => @blueteam, :position => position, :position_type => position_type %>
-            <% end %>
-            </tbody>
-          </table>
-        </div>
+          <% @positions.each do |position, position_type| %>
+            <%= render "position_row", :game => @game, :redteam => @red_team, :blueteam => @blueteam, :position => position, :position_type => position_type %>
+          <% end %>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-</center>
 
-
-
-<% if @goals.size() > 0 then %>
-  <center>
-    <div class="div-foos-title">
-      <center>
+  <% if @game.has_goals? then %>
+      <div class="div-foos-title">
         <h2 class="foos">Goals Scored</h2>
         <div class="break"></div>
-      </center>
-    </div>
-    <span style="width:auto;">
-      <table class="table table-hover table-condensed" style="width:auto;">
-        <thead>
-          <tr>
-            <td>Goal #</td>
-            <td>Player</td>
-            <td>Scored At</td>
-            <td class="blueteam">Blue</td>
-            <td class="redteam">Red</td>
-            <td>Comments</td>
-          </tr>
-        </thead>
-        <tbody>
-          <% @goals.each_with_index do |goal, index| %>
+      </div>
+      <span style="width:auto;">
+        <table class="table table-hover table-condensed" style="width:auto;">
+          <thead>
             <tr>
-              <td><%= (index+1) %></td>
-              <td><%= goal.player.firstname.humanize %></td>
-              <td><%= goal.created_at %></td>
-              <td class="<%= "info" if goal.blue_goal? %>"><%= @game.get_game_score_at_goal(goal)["blue_score"] %></td>
-              <td class="<%= "info" if goal.red_goal?  %>"><%= @game.get_game_score_at_goal(goal)["red_score"] %></td>
-              <td class="<%= "danger" if goal.own_goal? %>">
-              <% if goal.own_goal? %>
-                (Own Goal)
-              <% end %>
-              </td>
+              <td>Goal #</td>
+              <td>Player</td>
+              <td>Scored At</td>
+              <td class="blueteam">Blue</td>
+              <td class="redteam">Red</td>
+              <td>Comments</td>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </span>
-  </center>
-<% end %>
+          </thead>
+          <tbody>
+            <% @game.goals_ordered.each_with_index do |goal, index| %>
+              <tr>
+                <td><%= (index+1) %></td>
+                <td><%= goal.player.firstname.humanize %></td>
+                <td><%= goal.created_at %></td>
+                <td class="<%= "info" if goal.blue_goal? %>"><%= @game.teams.blue.first.get_team_score_at(goal) %></td>
+                <td class="<%= "info" if goal.red_goal?  %>"><%= @game.teams.red.first.get_team_score_at(goal) %></td>
+                <td class="<%= "danger" if goal.own_goal? %>">
+                <% if goal.own_goal? %>
+                  (Own Goal)
+                <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </span>
+  <% end %>
+</center>
 

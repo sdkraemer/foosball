@@ -6,7 +6,6 @@ FoosballApp::Application.routes.draw do
   #get "pages/home"
 
   resources :players
-  get 'games/recent_games'
   get 'games/player_dropdown'
   resources :games do
     post :generate_teams, on: :new

@@ -15,6 +15,24 @@ $btn-default-color:#3ec303;
 $btn-default-bg: #ffffff;
 
 
+$pagination-color: #3ec303;
+//$pagination-bg:                        #fff;
+//$pagination-border:                    #ddd;
+//
+$pagination-hover-color:               #3ec303;
+//$pagination-hover-bg:                  $gray-lighter;
+//$pagination-hover-border:              #ddd;
+//
+$pagination-active-color:     #fff;
+$pagination-active-bg:        #3ec303;
+$pagination-active-border:    #3ec303;
+//
+//$pagination-disabled-color:            $gray-light;
+//$pagination-disabled-bg:               #fff;
+//$pagination-disabled-border:           #ddd;
+
+
+
 .nav > li.active{
   font-weight:700;
   -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.23);

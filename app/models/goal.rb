@@ -23,11 +23,11 @@ class Goal < ActiveRecord::Base
   		if team.get_goals_total == 10
   			team.winner = true
   			team.save
-
-  			isGameComplete = true
   			
   			@game.completed_at = DateTime.now
   			@game.save
+
+        isGameComplete = true
   		end
   	end
 
@@ -35,6 +35,12 @@ class Goal < ActiveRecord::Base
   	if not isGameComplete and @game.completed_at != nil
   		@game.completed_at = nil
   		@game.save
+
+      #unset winner on teams
+      @games.teams.each do |team|
+        team.winner = false
+        team.save
+      end
   	end
   end
 

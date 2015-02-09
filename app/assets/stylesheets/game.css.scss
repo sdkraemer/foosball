@@ -11,4 +11,9 @@
 
 .table-padding td{
       padding: .25em;
-  }
+}
+
+tr.position-row td{
+	text-align:center;
+	padding-bottom: 1em !important;
+}

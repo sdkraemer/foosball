@@ -33,4 +33,13 @@ class Team < ActiveRecord::Base
     return team
   end
 
+  def get_team_score_at(goal)
+    game = self.game
+    other_team = game.teams.where.not(color: self.color).first
+    scored_goals = self.goals.scored_goal.where(["created_at <= ?", goal.created_at]).count
+    other_teams_own_goals = other_team.goals.own_goal.where(["created_at <= ?", goal.created_at]).count
+
+    return scored_goals + other_teams_own_goals
+  end
+
 end

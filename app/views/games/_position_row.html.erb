@@ -1,7 +1,7 @@
 <% red_position = @redteam.positions.where(position_type: position_type).first %>
 <% blue_position = @blueteam.positions.where(position_type: position_type).first %> 
 
-<tr style="text-align:center;">
+<tr class="position-row">
   <td class="pull-right" style="white-space:nowrap">
     <% if red_position.goals.own_goal.count > 0 %>
       <span class="badge alert-danger"><%= red_position.goals.own_goal.count %></span>

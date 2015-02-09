@@ -1,9 +1,13 @@
+
 <%= button_to "Back", players_path, :method => "get", :class => 'btn btn-default btn-sm' %>
-<br>
-
-
+<center>
+  <div class="div-foos-title">
+    <h1 class="foos">Player View</h1>
+    <div class="break"></div>
+  </div>
+</center>
 <div class="panel panel-default">
-  <div class="panel-heading">Player Form</div>
+  <div class="panel-heading"><h5><strong>Player Form</strong></h5></div>
   <div class="panel-body">
     <%= form_for :player, url: player_path(@player), method: :patch do |f| %>
 
@@ -45,35 +49,36 @@
 </div>
 
 <% if @player.persisted? %>
-  <center>
-    <h2 class="foos">Player Statistics</h2>
-    <div class="break"></div>
-  </center>
-  Record Last 10 Games: <%= @winner_ten %> - <%= @loser_ten %><br>
-  <table class="table table-hover table-condensed" style="width:auto;">
-    <thead>
-      <tr>
-        <td>Game ID</td>
-        <td>Completed At</td>
-        <td>Won or Lost?</td>
-      </tr>
-    </thead>
-    <tbody>
-    <% @last_ten_games.each do |game| %>
-      <tr>
-        <td><%= game.id %></td>
-        <td><%= game.completed_at %></td>
-      <% if game.did_player_win?(@player) %>
-        <td class="success">Won</td>
-      <% else %>
-        <td class="danger">Lost</td>
-      <% end %>
-        
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+  <div class="panel panel-default">
+    <div class="panel-heading"><h5><strong>Recent Games</strong></h5></div>
+    <div class="panel-body">
+    Record Last 10 Games: <%= @winner_ten %> - <%= @loser_ten %><br>
+      <table class="table table-hover table-condensed" style="width:auto;">
+        <thead>
+          <tr>
+            <th>Game ID</th>
+            <th>Completed At</th>
+            <th>Won or Lost?</th>
+            <th>Players</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @last_ten_games.each do |game| %>
+          <tr>
+            <td><%= button_to "View Game", edit_game_path(game), :method => "get", :class => 'btn btn-default btn-sm' %></td>
+            <td><%= game.completed_at %></td>
+
+            <%= game.td_players_game_result(@player) %>
+            <td><%= game.players_in_game %> </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 <% end %>
+
+
 
     
 

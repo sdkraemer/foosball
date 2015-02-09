@@ -4,6 +4,9 @@ ruby '2.0.0'
 #ruby-gemset=railstutorial_rails_4_0
 
 gem 'rails', '~> 4.1'
+gem 'draper', '1.4.0'
+gem 'will_paginate', '~> 3.0.5'
+gem 'will_paginate-bootstrap'
 gem 'pg'
 #  gem 'pg', '0.17.1'
 gem 'tzinfo-data'

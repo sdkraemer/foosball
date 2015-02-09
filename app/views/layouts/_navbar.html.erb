@@ -16,7 +16,7 @@
       <ul class="nav navbar-nav">
         <li class="<%= current_page?(root_path)? 'active' : '' %>"><%= link_to "Home", root_path %></li>
         <li class="<%= current_page?(players_path)? 'active' : '' %>"><%= link_to "Players", players_path %></li>
-        <li class="<%= current_page?(games_recent_games_path)? 'active' : '' %>"><%= link_to "Recent Games", games_recent_games_path %></li>
+        <li class="<%= current_page?(games_path)? 'active' : '' %>"><%= link_to "Recent Games", games_path %></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>

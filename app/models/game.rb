@@ -112,30 +112,14 @@ class Game < ActiveRecord::Base
 		if self.completed_at != nil
 			self.completed_at = nil
 			self.teams.each do |team|
-				team.winner = nil
+				team.winner = false
 				team.save
 			end
 			self.save
 		end
 
 		lastgoal = self.goals.order("created_at").last
- 		lastgoal.delete
-	end
-
-	def get_game_score_at_goal(goal)
-		blue_team = self.teams.blue.first
-		red_team = self.teams.red.first
-
-		blue_goals = blue_team.goals.scored_goal.where(["created_at <= ?", goal.created_at])
-		red_goals = red_team.goals.scored_goal.where(["created_at <= ?", goal.created_at])
-		red_own_goals = red_team.goals.own_goal.where(["created_at <= ?", goal.created_at])
-		blue_own_goals = blue_team.goals.own_goal.where(["created_at <= ?", goal.created_at])
-
-		score = {"blue_score" => blue_goals.count+red_own_goals.count, "red_score" => red_goals.count+blue_own_goals.count}
-
-		#MyTable.where(["created_at < ?", 2.days.ago])
-
-		return score
+ 		lastgoal.destroy
 	end
 
 
