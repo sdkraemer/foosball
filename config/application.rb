@@ -31,7 +31,8 @@ module FoosballApp
         g.fixture_replacement :factory_girl, :dir => "spec/factories" 
     end
 
-    config.assets.precompile += %w( pages.css )
+    #config.assets.precompile += %w( pages.css players.css )
+    Rails.application.config.assets.precompile += ['pages.css', 'players.css']
 
     config.autoload_paths += %W(
       #{config.root}/app/presenters
