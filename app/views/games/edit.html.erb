@@ -28,7 +28,10 @@
   <br>
 
   <div style="min-width:200px;display:inline-block;text-align:center;padding:.5em;margin:.25em;">
-    <div class="panel panel-default ">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h5><strong>Scoreboard</strong></h5>
+      </div>
       <div class="panel-body">
         <table style="width:100%;" class="table-padding">
           <tbody>
@@ -66,10 +69,10 @@
   </div>
 
   <% if @game.has_goals? then %>
-      <div class="div-foos-title">
-        <h2 class="foos">Goals Scored</h2>
-        <div class="break"></div>
-      </div>
+
+    <div class="panel panel-default">
+    <div class="panel-heading"><h5><strong>Goals Scored</strong></h5></div>
+    <div class="panel-body panel-overflow-x">
       <span style="width:auto;">
         <table class="table table-hover table-condensed" style="width:auto;">
           <thead>
@@ -100,6 +103,7 @@
           </tbody>
         </table>
       </span>
+    </div>
   <% end %>
 </center>
 

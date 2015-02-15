@@ -54,12 +54,12 @@ class GameDecorator < ApplicationDecorator
   	end
   end
 
-  def td_players_game_result(player)
+  def badge_players_game_result(player)
     winner_count = self.teams.winner.joins(:positions).where(:positions => {player_id: player.id}).count
     if winner_count > 0 then
-      h.content_tag(:td, "Won", class: :success)
+      h.content_tag(:span, "Won", class: ['alert-success', :badge])
     else
-      h.content_tag(:td, "Lost", class: :danger)
+      h.content_tag(:span, "Lost", class: ['alert-danger', :badge])
     end
   end
 

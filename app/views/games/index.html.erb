@@ -12,20 +12,22 @@
     <thead>
       <tr>
         <th></th>
-        <th>Game ID</th>
-        <th>Started At</th>
         <th>Completed At</th>
-        <th>Winning Team</th>
+        <th>Winner</th>
       </tr>
     </thead>
     <tbody>
       <% @games.each do |game| %>
         <tr>
           <td><%= button_to "View Game", edit_game_path(game), :method => "get", :class => 'btn btn-default btn-sm' %></td>
-          <td><%= game.id %></td>
-          <td><%= game.created_at %></td>
           <td><%= game.completed_at %></td>
-          <td class="<%= game.winning_team_class %>"><%= game.winning_team_color %></td>
+          <td>
+            <% if game.completed? %>
+              <span class="badge <%= game.winning_team_class %>">
+                <%= game.winning_team_color %>
+              </span>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>

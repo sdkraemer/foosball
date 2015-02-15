@@ -67,8 +67,9 @@
           <tr>
             <td><%= button_to "View Game", edit_game_path(game), :method => "get", :class => 'btn btn-default btn-sm' %></td>
             <td><%= game.completed_at %></td>
-
-            <%= game.td_players_game_result(@player) %>
+            <td>
+              <%= game.badge_players_game_result(@player) %>  
+            </td>
             <td><%= game.players_in_game %> </td>
           </tr>
         <% end %>
