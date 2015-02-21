@@ -39,7 +39,7 @@ class PlayersController < ApplicationController
   def edit
     @player = Player.find(params[:id])
 
-    @games = GameDecorator.decorate_collection( Game.completed.distinct.joins(:teams).joins(:positions).where(:positions => {player_id: @player.id}).order(created_at: :desc).paginate(:page => params[:page], :per_page => 1) )
+    @games = GameDecorator.decorate_collection( Game.completed.distinct.joins(:teams).joins(:positions).where(:positions => {player_id: @player.id}).order(created_at: :desc).paginate(:page => params[:page], :per_page => 10) )
     game_ids = @games.map(&:id)
 
     @loser_ten = Team.distinct.loser.joins(:positions).where(:positions => {player_id: @player.id}, :teams => {game_id: game_ids}).count
