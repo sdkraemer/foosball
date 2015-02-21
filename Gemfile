@@ -10,15 +10,16 @@ gem 'will_paginate-bootstrap'
 gem 'pg'
 #  gem 'pg', '0.17.1'
 gem 'tzinfo-data'
-gem 'execjs'
+gem 'execjs', '2.2.2'
 
 gem 'bootstrap-sass', '~> 3.2.0'
+gem 'coffee-script-source', '1.8.0'
 gem 'sass-rails', '>= 3.2'
 
 
 group :development, :test do 
 	gem 'rspec-rails' 
-	gem 'factory_girl_rails'
+	gem "factory_girl_rails", "~> 4.0"
 end 
 
 group :test do 

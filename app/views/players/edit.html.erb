@@ -52,7 +52,8 @@
   <div class="panel panel-default">
     <div class="panel-heading"><h5><strong>Recent Games</strong></h5></div>
     <div class="panel-body panel-overflow-x">
-    Record Last 10 Games: <%= @winner_ten %> - <%= @loser_ten %><br>
+      Record Last 10 Games: <%= @winner_ten %> - <%= @loser_ten %><br>
+      <%= will_paginate @games, renderer: BootstrapPagination::Rails %>
       <table class="table table-hover table-condensed" style="width:auto;">
         <thead>
           <tr>
@@ -63,7 +64,7 @@
           </tr>
         </thead>
         <tbody>
-        <% @last_ten_games.each do |game| %>
+        <% @games.each do |game| %>
           <tr>
             <td><%= button_to "View Game", edit_game_path(game), :method => "get", :class => 'btn btn-default btn-sm' %></td>
             <td><%= game.completed_at %></td>

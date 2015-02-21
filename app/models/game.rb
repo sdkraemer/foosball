@@ -9,9 +9,11 @@
 
 class Game < ActiveRecord::Base
 	has_many :teams, :dependent => :destroy
-	has_many :goals, :dependent => :destroy
 	has_many :positions, :through => :teams
 	has_many :players, :through => :positions
+	has_many :goals, :through => :positions
+	
+	
 
 	validate :teams_cannot_be_more_than_two
 	#, :game_cannot_be_started_without_two_teams
@@ -149,7 +151,7 @@ class Game < ActiveRecord::Base
 
 	#validators
 	def teams_cannot_be_more_than_two
-    errors[:base] = 'Games cannot have more than two teams' unless teams.size<=2
+    	errors[:base] = 'Games cannot have more than two teams' unless self.teams.size <= 2
 	end
 	
 # def game_cannot_be_started_without_two_teams

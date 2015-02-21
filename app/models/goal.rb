@@ -1,8 +1,6 @@
 class Goal < ActiveRecord::Base
-  belongs_to :game
-  belongs_to :team
   belongs_to :position
-  belongs_to :player
+  has_one :player, :through => :position
 
   after_save :complete_game
   before_save :timestamp
@@ -16,31 +14,20 @@ class Goal < ActiveRecord::Base
 
   #complete a game if a team reached 10 goals
   def complete_game
-  	@game = self.game
+
+    game = self.position.team.game
   	isGameComplete = false
 
-  	@game.teams.each do |team|
+  	game.teams.each do |team|
   		if team.get_goals_total == 10
   			team.winner = true
-  			team.save
-  			
-  			@game.completed_at = DateTime.now
-  			@game.save
+  			team.save!
+
+  			game.completed_at = DateTime.now
+  			game.save!
 
         isGameComplete = true
   		end
-  	end
-
-  	#if undo occurred or bad data, unset completed_at
-  	if not isGameComplete and @game.completed_at != nil
-  		@game.completed_at = nil
-  		@game.save
-
-      #unset winner on teams
-      @games.teams.each do |team|
-        team.winner = false
-        team.save
-      end
   	end
   end
 
@@ -53,10 +40,10 @@ class Goal < ActiveRecord::Base
   end
 
   def blue_goal?
-    return (self.team.blue? && !self.own_goal?) || (self.team.red? && self.own_goal?)
+    return (self.position.team.blue? && !self.own_goal?) || (self.position.team.red? && self.own_goal?)
   end
 
   def red_goal?
-    return (self.team.red? && self.quantity > 0) || (self.team.blue? && self.own_goal?)
+    return (self.position.team.red? && self.quantity > 0) || (self.position.team.blue? && self.own_goal?)
   end
 end

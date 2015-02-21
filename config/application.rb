@@ -32,11 +32,7 @@ module FoosballApp
     end
 
     #config.assets.precompile += %w( pages.css players.css )
-    Rails.application.config.assets.precompile += ['pages.css', 'players.css']
-
-    config.autoload_paths += %W(
-      #{config.root}/app/presenters
-    )
+    Rails.application.config.assets.precompile += ['pages.css', 'players.css', 'games.css']
 
     config.time_zone = 'Arizona'
   end

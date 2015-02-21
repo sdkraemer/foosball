@@ -10,43 +10,69 @@
 require 'spec_helper'
 
 describe Game do
-  it "has valid factory" do
-  	expect(FactoryGirl.create(:game)).to be_valid
+  describe "validate associations" do
+
+    before :each do
+      @game = FactoryGirl.create(:game)
+      team_one = @game.teams.create(color: :blue)
+      team_two = @game.teams.create(color: :red)
+
+      player_one = Player.create(firstname: "Scott", lastname: "Kraemer", username: "Scott")
+      player_two = Player.create(firstname: "Suzanne", lastname: "Nogami", username: "Suzanne")
+
+      team_one.positions.create(position_type: :striker, player_id: player_one.id)
+      team_one.positions.create(position_type: :midfield, player_id: player_one.id)
+      team_one.positions.create(position_type: :defense, player_id: player_one.id)
+      team_one.positions.create(position_type: :goalie, player_id: player_one.id)
+
+      team_two.positions.create(position_type: :striker, player_id: player_two.id)
+      team_two.positions.create(position_type: :midfield, player_id: player_two.id)
+      team_two.positions.create(position_type: :defense, player_id: player_two.id)
+      team_two.positions.create(position_type: :goalie, player_id: player_two.id)
+
+      goal = team_one.positions.first.goals.create()
+    end 
+
+    it "can access teams" do 
+      expect(@game.teams.count).to eq(2)
+    end
+
+    it "can access positions" do 
+      expect(@game.positions.count).to eq(8)
+    end
+
+    it "can access goals" do 
+      expect(@game.goals.count).to eq(1)
+    end
+  end #validate associations
+
+  describe "game flow" do 
+    before :each do
+      @game = Game.create()
+      @blue_team = @game.teams.create(color: :blue)
+      @red_team = @game.teams.create(color: :red)
+
+      player_one = Player.create(firstname: "Scott", lastname: "Kraemer", username: "Scott")
+      player_two = Player.create(firstname: "Suzanne", lastname: "Nogami", username: "Suzanne")
+
+      @blue_team.positions.create(position_type: :striker, player_id: player_one.id)
+      @blue_team.positions.create(position_type: :midfield, player_id: player_one.id)
+      @blue_team.positions.create(position_type: :defense, player_id: player_one.id)
+      @blue_team.positions.create(position_type: :goalie, player_id: player_one.id)
+
+      @red_team.positions.create(position_type: :striker, player_id: player_two.id)
+      @red_team.positions.create(position_type: :midfield, player_id: player_two.id)
+      @red_team.positions.create(position_type: :defense, player_id: player_two.id)
+      @red_team.positions.create(position_type: :goalie, player_id: player_two.id)
+    end
+
+    it "completes game after ten goals" do 
+      10.times {
+        @blue_team.positions.first.goals.create(quantity: 1)
+      }
+
+      expect(@blue_team.winner).to be true
+    end
   end
 
-  it "is valid with one team" do
-  	game_with_one_team = FactoryGirl.create :game_with_teams, number_of_teams: 1
-  	expect(game_with_one_team).to be_valid
-	end
-
-	it "is valid with two team" do
-  	game_with_two_team = FactoryGirl.create :game_with_teams, number_of_teams: 2
-  	expect(game_with_two_team).to be_valid
-	end
-
-	it "is not valid with three team" do
-  	game_with_three_team = FactoryGirl.create :game_with_teams, number_of_teams: 3
-  	expect(game_with_three_team).not_to be_valid
-	end
-
-	it "is not valid with one team and started" do
-		game = FactoryGirl.build :game_with_teams, started_at: Date.new(2012, 12, 3), number_of_teams: 1
-		expect(game).not_to be_valid
-	end
-
-  it "is not valid with no teams and started date" do
-		game = FactoryGirl.build :game_with_teams, started_at: Date.new(2012, 12, 3), number_of_teams: 0
-		expect(game).not_to be_valid
-	end
-
-  it "is valid with two teams and started" do
-		game = FactoryGirl.build :game_with_teams, started_at: Date.new(2012, 12, 3), number_of_teams: 2
-		expect(game).to be_valid
-	end
-
-
-  it "is not valid with one team and goals" do
-  	game = FactoryGirl.create:game_with_teams, number_of_teams: 1
-  	
-  end
 end
