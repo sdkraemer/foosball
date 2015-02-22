@@ -71,7 +71,7 @@ describe Game do
         @blue_team.positions.first.goals.create(quantity: 1)
       }
 
-      expect(@blue_team.winner).to be true
+      expect(@blue_team.reload.winner).to be true
     end
   end
 

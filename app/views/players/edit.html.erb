@@ -50,9 +50,22 @@
 
 <% if @player.persisted? %>
   <div class="panel panel-default">
-    <div class="panel-heading"><h5><strong>Recent Games</strong></h5></div>
+    <div class="panel-heading"><h5><strong>Player Stats</strong></h5></div>
     <div class="panel-body panel-overflow-x">
-      Record Last 10 Games: <%= @winner_ten %> - <%= @loser_ten %><br>
+      <ul>
+        <li><b>Goals Scored:</b> <%= @player.total_goals %></li>
+        <li><b>Win Percentage:</b> <%= @player.win_percentage.to_i %></li>
+        <li><b>Record:</b> <%= @player.player_wins %> - <%= @player.player_losses %>
+        <li><b>Goals Per Game:</b> <%= number_with_precision(@player.goals_per_game, precision: 2) %>
+        <li><b>Goals Per Position:</b> <%= number_with_precision(@player.goals_per_stick, precision: 2) %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading"><h5><strong>Game Logs</strong></h5></div>
+    <div class="panel-body panel-overflow-x">
+      <b>Record Last <%= @games.count %> Games:</b> <%= @winner_ten %> - <%= @loser_ten %><br>
       <%= will_paginate @games, renderer: BootstrapPagination::Rails %>
       <table class="table table-hover table-condensed" style="width:auto;">
         <thead>
@@ -60,7 +73,10 @@
             <th>Game ID</th>
             <th>Completed At</th>
             <th>W/L</th>
-            <th>Players</th>
+            <th>Score</th>
+            <th>Teammates</th>
+            <th>Opposing Team</th>
+            <th>Goals Scored</th>
           </tr>
         </thead>
         <tbody>
@@ -71,7 +87,12 @@
             <td>
               <%= game.badge_players_game_result(@player) %>  
             </td>
-            <td><%= game.players_in_game %> </td>
+            <td>
+              <%= game.team(@player).get_goals_total %> - <%= game.team(@player).opposing_team.get_goals_total %>
+            </td>
+            <td><%= game.team(@player).players_list %></td>
+            <td><%= game.team(@player).opposing_team.players_list %></td>
+            <td><%= game.goals_scored(@player) %></td>
           </tr>
         <% end %>
         </tbody>

@@ -14,7 +14,6 @@ class Goal < ActiveRecord::Base
 
   #complete a game if a team reached 10 goals
   def complete_game
-
     game = self.position.team.game
   	isGameComplete = false
 

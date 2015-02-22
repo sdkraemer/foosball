@@ -107,7 +107,11 @@ class Game < ActiveRecord::Base
 	end
 
 	def winning_team
-		winningteam = self.teams.where(winner: true)
+		self.teams.where(winner: true).first
+	end
+
+	def losing_team
+		self.teams.where(winner: false).first
 	end
 
 	def undo_last_goal
@@ -148,10 +152,18 @@ class Game < ActiveRecord::Base
 		return winner_count > 0
 	end
 
+	def team(player)
+		self.teams.joins(:positions).where(:positions => {player_id: player.id}).first
+	end
 
 	#validators
 	def teams_cannot_be_more_than_two
     	errors[:base] = 'Games cannot have more than two teams' unless self.teams.size <= 2
+	end
+
+	#goals scored by the passed in player
+	def goals_scored(player)
+		self.positions.where("positions.player_id = ?",player.id).joins(:goals).merge(Goal.scored_goal).count
 	end
 	
 # def game_cannot_be_started_without_two_teams

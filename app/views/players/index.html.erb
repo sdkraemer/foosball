@@ -23,8 +23,8 @@
 				<%= button_to "View Player", edit_player_path(player), :method => "get", :class => 'btn btn-default btn-sm' %>
 			</td>
 			<td><%= player.username %></td>
-			<td><%= player.firstname %></td>
-			<td><%= player.lastname %></td>
+			<td><%= player.firstname.humanize %></td>
+			<td><%= player.lastname.humanize %></td>
 		</tr>
 	<% end %>
 	</tbody>

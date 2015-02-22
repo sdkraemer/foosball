@@ -13,11 +13,16 @@ class Team < ActiveRecord::Base
   scope :blue, -> {where(color: 0)}
   scope :red, -> {where(color: 1)}
 
+  def opposing_team
+    @opposing_team ||= self.game.teams.where.not(id: self.id).first
+  end
+
   def get_goals_total
   	game = self.game
   	scored_goals = self.goals.scored_goal
 
-  	opposing_team_own_goals = game.teams.where.not(id: self.id).first.goals.own_goal
+  	#opposing_team_own_goals = game.teams.where.not(id: self.id).first.goals.own_goal
+    opposing_team_own_goals = opposing_team.goals.own_goal
 
   	return scored_goals.count + opposing_team_own_goals.count
   end
@@ -43,6 +48,10 @@ class Team < ActiveRecord::Base
     opposing_teams_own_goals = opposing_team.goals.own_goal.where(["goals.created_at <= ?", goal.created_at]).count
 
     return scored_goals + opposing_teams_own_goals
+  end
+
+  def players_list
+    self.positions.joins(:player).select("players.firstname").distinct("players.firstname").pluck(:firstname).map{|f| f.humanize}.join(",")
   end
 
 end

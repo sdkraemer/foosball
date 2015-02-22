@@ -35,7 +35,7 @@ class PlayersController < ApplicationController
 		end	
 	end
 
-	#need to move this logic into a helper or module to store statistics
+	#need to move this logic into a helper or module to store statistics....or just a controller
   def edit
     @player = Player.find(params[:id])
 
