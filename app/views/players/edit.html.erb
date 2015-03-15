@@ -58,6 +58,7 @@
         <li><b>Record:</b> <%= @player.player_wins %> - <%= @player.player_losses %>
         <li><b>Goals Per Game:</b> <%= number_with_precision(@player.goals_per_game, precision: 2) %>
         <li><b>Goals Per Position:</b> <%= number_with_precision(@player.goals_per_stick, precision: 2) %>
+        <li><b>Plus/Minus Rating:</b> <%= @player.plus_minus %>
       </ul>
     </div>
   </div>

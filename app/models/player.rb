@@ -21,6 +21,7 @@ class Player < ActiveRecord::Base
 
 	#subtracts own goals
 	def total_goals
+		return @total_goals if defined? @total_goals
 		scored_goals = Game.completed.joins(:goals).merge(Goal.scored_goal).select("goals.id").where(:goals => {:player_id => self.id}).count
 		own_goals = Game.completed.joins(:goals).merge(Goal.own_goal).select("goals.id").where(:goals => {:player_id => self.id}).count
 		
@@ -66,5 +67,20 @@ class Player < ActiveRecord::Base
 		else
 			0
 		end
+	end
+
+	def plus_minus
+		my_games = Game.uniq.completed.joins(:teams, :positions).where(:positions => {player_id: self.id})
+		my_teams_goals = 0
+		opposing_teams_goals = 0
+
+		my_games.each do |game|
+			my_team = game.team(self)
+			opposing_team = my_team.opposing_team
+
+			my_teams_goals += my_team.get_goals_total
+			opposing_teams_goals += opposing_team.get_goals_total
+		end
+		my_teams_goals - opposing_teams_goals
 	end
 end
