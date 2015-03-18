@@ -22,6 +22,7 @@
         <th>Record</th>
         <th>Win %</th>
         <th>+/-</th>
+        <th>Margin</th>
       </tr>
     </thead>
     <tbody>
@@ -34,6 +35,7 @@
         <td><%= player.player_wins %> - <%= player.player_losses %></td>
         <td><%= player.win_percentage.to_i %></td>
         <td><%= player.plus_minus %></td>
+        <td><%= number_with_precision(player.margin, precision: 2) %></td>
       </tr>
     <% end %>
     </tbody>
