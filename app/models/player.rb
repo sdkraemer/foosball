@@ -70,22 +70,40 @@ class Player < ActiveRecord::Base
 	end
 
 	def plus_minus
-		games = Game.completed.joins(:teams, :positions).where(:positions => {player_id: self.id})
 
-		
+		games = Game.completed.joins(:teams, :positions).where(:positions => {player_id: self.id}).uniq
 
+		my_teams = Team.where(game_id: games).joins(:positions).where(:positions => {player_id: self.id}).uniq
+		#puts "*************my_teams:#{my_teams.pluck(:id)}"
+		opposing_teams = Team.where(game_id: games).where.not(id: my_teams.pluck(:id))
+		#puts "************opposing_teams:#{opposing_teams.pluck(:id)}"
 
-		my_games = Game.uniq.completed.joins(:teams, :positions).where(:positions => {player_id: self.id})
-		my_teams_goals = 0
-		opposing_teams_goals = 0
+		#my_teams_goals = my_teams.joins(:positions, :goals)
+		my_teams_scored_goals = Team.where(id: my_teams.pluck(:id)).joins(:goals).merge(Goal.scored_goal).count
+		my_teams_own_goals = Team.where(id: my_teams.pluck(:id)).joins(:goals).merge(Goal.own_goal).count
 
-		my_games.each do |game|
-			my_team = game.team(self)
-			opposing_team = my_team.opposing_team
+		#opposing_teams_goals = opposing_teams.joins(:positions, :goals)
+		opposing_teams_scored_goals = Team.where(id: opposing_teams.pluck(:id)).joins(:goals).merge(Goal.scored_goal).count
+		opposing_teams_own_goals = Team.where(id: opposing_teams.pluck(:id)).joins(:goals).merge(Goal.own_goal).count
 
-			my_teams_goals += my_team.get_goals_total
-			opposing_teams_goals += opposing_team.get_goals_total
-		end
-		my_teams_goals - opposing_teams_goals
+		#puts "id:#{self.id} my_teams_scored_goals:#{my_teams_scored_goals}"
+		#puts "id:#{self.id} opposing_teams_own_goals:#{opposing_teams_own_goals}"
+		#puts "id:#{self.id} opposing_teams_scored_goals:#{opposing_teams_scored_goals}"
+		#puts "id:#{self.id} my_teams_own_goals:#{my_teams_own_goals}"
+		my_teams_scored_goals + opposing_teams_own_goals - opposing_teams_scored_goals - my_teams_own_goals
+
+		#my_games = Game.uniq.completed.joins(:teams, :positions).where(:positions => {player_id: self.id})
+
+		#my_teams_goals = 0
+		#opposing_teams_goals = 0
+
+		#my_games.each do |game|
+		#	my_team = game.team(self)
+		#	opposing_team = my_team.opposing_team
+
+		#	my_teams_goals += my_team.get_goals_total
+		#	opposing_teams_goals += opposing_team.get_goals_total
+		#end
+		#my_teams_goals - opposing_teams_goals
 	end
 end
