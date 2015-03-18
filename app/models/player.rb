@@ -70,6 +70,11 @@ class Player < ActiveRecord::Base
 	end
 
 	def plus_minus
+		games = Game.completed.joins(:teams, :positions).where(:positions => {player_id: self.id})
+
+		
+
+
 		my_games = Game.uniq.completed.joins(:teams, :positions).where(:positions => {player_id: self.id})
 		my_teams_goals = 0
 		opposing_teams_goals = 0
