@@ -92,7 +92,7 @@ class Player < ActiveRecord::Base
 
 	def margin
 		if my_games.count > 0
-			plus_minus/my_games.count
+			(plus_minus*1.0)/my_games.count
 		else
 			0
 		end
