@@ -33,6 +33,9 @@
           <%= f.submit "Update Player", class: 'btn btn-primary btn-sm'%>
         </div>
       <% end %>
+      <% if current_player.username == @player.username %>
+        <%= link_to "Update Password", edit_player_registration_path(@player) %>
+      <% end %>
     <% end %>
   </div>
 </div>
