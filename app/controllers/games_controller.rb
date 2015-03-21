@@ -39,6 +39,13 @@ class GamesController < ApplicationController
  	end
 
  	def destroy
+ 		game = Game.find(params[:id])
+
+ 		if game.destroy then 
+ 			redirect_to games_path
+ 		else
+ 			redirect_to games_path, flash: {error: "Something went wrong. Please try again"}
+ 		end
  	end
 
  	def undo

@@ -2,7 +2,9 @@
 
 <div class="jumbotron">
   <h1 style="color:white;">Time to <span style="color:#3ec303;" class="foos-brand">foos</span></h1>
-  <%= link_to "Start a Game", new_game_path, class: "btn btn-large btn-primary" %>
+  <% if player_signed_in? %>
+    <%= link_to "Start a Game", new_game_path, class: "btn btn-large btn-primary" %>
+  <% end %>
 </div>
 
 <div class="container">

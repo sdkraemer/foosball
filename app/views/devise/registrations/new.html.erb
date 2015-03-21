@@ -1,0 +1,39 @@
+<center>
+  <div class="div-foos-title">
+    <h1 class="foos">Sign Up</h1>
+    <div class="break"></div>
+  </div>
+</center>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h5><strong>Sign Up Player Form</strong></h5>
+  </div>
+  <div class="panel-body">
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
+
+      <%= render "players/form", :form => f  %>
+
+      <div class="form-group">
+        <%= f.label :password %>
+        <% if @validatable %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+        <% end %><br />
+        <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.submit "Sign up", class: 'btn btn-primary btn-sm' %>
+        <%= render "devise/shared/links" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+

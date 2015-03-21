@@ -14,14 +14,14 @@
   <td>
       <%= form_for [@game, @redteam, red_position], url: score_game_team_position_path(@game, @redteam, red_position), html:{method: "post"} do |f|%>
         <%= hidden_field_tag :quantity, "1" %>
-        <%= f.button("Goal", :class => 'btn btn-primary', :type => :button, :onclick => 'game.score_goal(this)', :disabled => @game.is_finished ) %>
+        <%= f.button("Goal", :class => 'btn btn-primary', :type => :button, :onclick => 'game.score_goal(this)', :disabled => (@game.completed? || !player_signed_in?) ) %>
       <% end %>
   </td>
   <td><label><%= position.humanize %></label></td>
   <td>
       <%= form_for [@game, @blueteam, blue_position], url: score_game_team_position_path(@game, @blueteam, blue_position), html:{method: "post"} do |f|%>
         <%= hidden_field_tag :quantity, "1" %>
-        <%= f.button("Goal", :class => 'btn btn-primary', :type => :button, :onclick => 'game.score_goal(this)', :disabled => @game.is_finished) %>
+        <%= f.button("Goal", :class => 'btn btn-primary', :type => :button, :onclick => 'game.score_goal(this)', :disabled => (@game.completed? || !player_signed_in?) )%>
       <% end %>
   </td>
   <td class="pull-left" style="white-space:nowrap">

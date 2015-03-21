@@ -31,7 +31,7 @@ class PlayersController < ApplicationController
 		if @player.update(player_params)
 			redirect_to edit_player_path(@player)
 		else
-			render edit_player_path(@player)
+			redirect_to edit_player_path(@player)
 		end	
 	end
 
@@ -52,7 +52,7 @@ class PlayersController < ApplicationController
 
   private
 	  def player_params
-	    params.require(:player).permit(:username, :firstname, :lastname)
+	    params.require(:player).permit(:username, :firstname, :lastname, :email)
 	  end
 
   

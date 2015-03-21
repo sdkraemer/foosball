@@ -1,37 +1,19 @@
-<% remote = modal ? true : false %>
-<%= form_for @player, remote: remote, url: players_path do |f| %>
+<div class="form-group">
+  <%= form.label :username, 'User Name' %><br>
+  <%= form.text_field :username, class: "form-control", placeholder: 'user name' %>
+</div>
 
-	<% if @player.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(@player.errors.count, "error") %> 
-      </h2>
-      <ul>
-        <% @player.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div class="form-group">
+  <%= form.label :firstname, 'First Name' %><br>
+  <%= form.text_field :firstname, class: "form-control", placeholder: 'first name' %>
+</div>
 
+<div class="form-group">
+  <%= form.label :lastname, 'Last Name' %><br>
+  <%= form.text_field :lastname, class: "form-control", placeholder: 'last name' %>
+</div>
 
-  <div class="form-group">
-    <%= f.label :username, 'User Name' %><br>
-    <%= f.text_field :username %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :firstname, 'First Name' %><br>
-    <%= f.text_field :firstname %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :lastname, 'Last Name' %><br>
-    <%= f.text_field :lastname %>
-  </div>
- 
- 
-  <div class="form-group">
-    <%= f.submit "Save Player", class: 'btn btn-primary btn-sm'%>
-  </div>
-<% end %>
+<div class="form-group">
+  <%= form.label :email, 'Email' %><br>
+  <%= form.text_field :email, class: "form-control", placeholder: 'email address' %>
+</div>

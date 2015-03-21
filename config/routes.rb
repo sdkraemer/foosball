@@ -1,4 +1,5 @@
 FoosballApp::Application.routes.draw do
+  devise_for :players
   get 'position/score'
 
   #get "players/index"

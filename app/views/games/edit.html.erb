@@ -11,18 +11,22 @@
       <strong><%= @game.winning_team_color %> Won!</strong> - Completed at:<%= @game.completed_at.to_s %>
     </div>
 
+    <% if player_signed_in? %>
+      <div class="btn-group">
+        <%= form_for @game, url:{action: "rematch"}, html:{method: "post"} do |f| %>
+          <%= f.submit("Rematch", :class => 'btn btn-default btn-sm') %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if player_signed_in? %>
     <div class="btn-group">
-      <%= form_for @game, url:{action: "rematch"}, html:{method: "post"} do |f| %>
-        <%= f.submit("Rematch", :class => 'btn btn-default btn-sm') %>
+      <%= form_for @game, url: undo_game_path(@game), html: {method: "post"} do |f| %>
+        <% f.submit("Undo Last Goal", :class => 'btn btn-default btn-sm') %>
       <% end %>
     </div>
   <% end %>
-
-  <div class="btn-group">
-    <%= form_for @game, url: undo_game_path(@game), html: {method: "post"} do |f| %>
-      <% f.submit("Undo Last Goal", :class => 'btn btn-default btn-sm') %>
-    <% end %>
-  </div>
 
   <br>
   <br>

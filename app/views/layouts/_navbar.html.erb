@@ -14,9 +14,28 @@
 
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="<%= current_page?(root_path)? 'active' : '' %>"><%= link_to "Home", root_path %></li>
-        <li class="<%= current_page?(players_path)? 'active' : '' %>"><%= link_to "Players", players_path %></li>
-        <li class="<%= current_page?(games_path)? 'active' : '' %>"><%= link_to "Recent Games", games_path %></li>
+        <li class="<%= current_page?(root_path)? 'active' : '' %>">
+          <%= link_to "Home", root_path %>
+        </li>
+        <li class="<%= current_page?(players_path)? 'active' : '' %>"><%= link_to "Players", players_path %>
+        </li>
+        <li class="<%= current_page?(games_path)? 'active' : '' %>"><%= link_to "Games", games_path %>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <% if player_signed_in? %>
+          <li>
+            <%= link_to "Hi #{current_player.username.humanize}", edit_player_path(current_player) %>
+          </li>
+          <li>
+            <%= link_to "Logout", destroy_player_session_path, method: :delete %>
+          </li>
+        <% else %>
+          <li class="<%= current_page?(new_player_registration_path)? 'active' : '' %>"><%= link_to "Sign Up", new_player_registration_path %>
+          </li>
+          <li class="<%= current_page?(new_player_session_path)? 'active' : '' %>"><%= link_to "Login", new_player_session_path %>
+          </li>
+        <% end %>
       </ul>
     </div><!--/.nav-collapse -->
   </div>

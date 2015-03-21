@@ -2,10 +2,12 @@
   
 
   <div class="div-foos-title">
-    <h1 class="foos">Recent Games</h1>
+    <h1 class="foos">Games</h1>
     <div class="break"></div>
   </div>
-  <%= link_to "Start a Game", new_game_path, class: "btn btn-large btn-primary" %>
+  <% if player_signed_in? %>
+    <%= link_to "Start a Game", new_game_path, class: "btn btn-large btn-primary" %>
+  <% end %>
   <br>
   <%= will_paginate @games, renderer: BootstrapPagination::Rails %>
   <table class="table table-hover table-condensed">
@@ -19,7 +21,13 @@
     <tbody>
       <% @games.each do |game| %>
         <tr>
-          <td><%= button_to "View Game", edit_game_path(game), :method => "get", :class => 'btn btn-default btn-sm' %></td>
+          <td>
+              <% if player_signed_in? && current_player.admin? %>
+                <%= link_to "Delete", game_path(game), :method => "delete", :class => 'btn btn-default btn-sm' %>
+              <% end %>
+              <%= link_to "View Game", edit_game_path(game), :method => "get", :class => 'btn btn-default btn-sm' %>
+
+          </td>
           <td><%= game.completed_at %></td>
           <td>
             <% if game.completed? %>

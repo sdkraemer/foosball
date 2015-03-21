@@ -72,4 +72,5 @@ class GameDecorator < ApplicationDecorator
     team_players.join(" vs ")
   end
 
+
 end

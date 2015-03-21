@@ -25,25 +25,13 @@
         </div>
       <% end %>
 
-      <div class="form-group">
-        <%= f.label :username, 'User Name' %><br>
-        <%= f.text_field :username %>
-      </div>
+      <%= render 'form', :form => f %>
 
-      <div class="form-group">
-        <%= f.label :firstname, 'First Name' %><br>
-        <%= f.text_field :firstname %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :lastname, 'Last Name' %><br>
-        <%= f.text_field :lastname %>
-      </div>
-     
-     
-      <div class="form-group">
-        <%= f.submit "Update Player", class: 'btn btn-primary btn-sm'%>
-      </div>
+      <% if current_player.username == @player.username then %>
+        <div class="form-group">
+          <%= f.submit "Update Player", class: 'btn btn-primary btn-sm'%>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>
@@ -66,38 +54,42 @@
   <div class="panel panel-default">
     <div class="panel-heading"><h5><strong>Game Logs</strong></h5></div>
     <div class="panel-body panel-overflow-x">
-      <b>Record Last <%= @games.count %> Games:</b> <%= @winner_ten %> - <%= @loser_ten %><br>
-      <%= will_paginate @games, renderer: BootstrapPagination::Rails %>
-      <table class="table table-hover table-condensed" style="width:auto;">
-        <thead>
-          <tr>
-            <th>Game ID</th>
-            <th>Completed At</th>
-            <th>W/L</th>
-            <th>Score</th>
-            <th>Teammates</th>
-            <th>Opposing Team</th>
-            <th>Goals Scored</th>
-          </tr>
-        </thead>
-        <tbody>
-        <% @games.each do |game| %>
-          <tr>
-            <td><%= button_to "View Game", edit_game_path(game), :method => "get", :class => 'btn btn-default btn-sm' %></td>
-            <td><%= game.completed_at %></td>
-            <td>
-              <%= game.badge_players_game_result(@player) %>  
-            </td>
-            <td>
-              <%= game.team(@player).get_goals_total %> - <%= game.team(@player).opposing_team.get_goals_total %>
-            </td>
-            <td><%= game.team(@player).players_list %></td>
-            <td><%= game.team(@player).opposing_team.players_list %></td>
-            <td><%= game.goals_scored(@player) %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
+      <% if @games.count > 0 then %>
+        <b>Record Last <%= @games.count %> Games:</b> <%= @winner_ten %> - <%= @loser_ten %><br>
+        <%= will_paginate @games, renderer: BootstrapPagination::Rails %>
+        <table class="table table-hover table-condensed" style="width:auto;">
+          <thead>
+            <tr>
+              <th>Game ID</th>
+              <th>Completed At</th>
+              <th>W/L</th>
+              <th>Score</th>
+              <th>Teammates</th>
+              <th>Opposing Team</th>
+              <th>Goals Scored</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @games.each do |game| %>
+            <tr>
+              <td><%= button_to "View Game", edit_game_path(game), :method => "get", :class => 'btn btn-default btn-sm' %></td>
+              <td><%= game.completed_at %></td>
+              <td>
+                <%= game.badge_players_game_result(@player) %>  
+              </td>
+              <td>
+                <%= game.team(@player).get_goals_total %> - <%= game.team(@player).opposing_team.get_goals_total %>
+              </td>
+              <td><%= game.team(@player).players_list %></td>
+              <td><%= game.team(@player).opposing_team.players_list %></td>
+              <td><%= game.goals_scored(@player) %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <b>No games played yet...</b>
+      <% end %>
     </div>
   </div>
 <% end %>

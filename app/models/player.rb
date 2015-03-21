@@ -11,13 +11,17 @@
 #
 
 class Player < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable, :authentication_keys => [:username]
 	has_many :positions
 	has_many :goals
 
 	validates :username, presence: true, 
 						 length: { minimum: 4 }
-	validates :firstname, presence: true
-	validates :lastname, presence: true
+	#validates :firstname, presence: true
+	#validates :lastname, presence: true
 
 	#subtracts own goals
 	def total_goals
