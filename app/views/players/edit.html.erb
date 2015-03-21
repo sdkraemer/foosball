@@ -27,7 +27,8 @@
 
       <%= render 'form', :form => f %>
 
-      <% if current_player.username == @player.username then %>
+      <% if (current_player.username == @player.username) or 
+            (player_signed_in? && current_player.admin?) then %>
         <div class="form-group">
           <%= f.submit "Update Player", class: 'btn btn-primary btn-sm'%>
         </div>
