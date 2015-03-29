@@ -1,19 +1,19 @@
 <div class="form-group">
   <%= form.label :username, 'User Name' %><br>
-  <%= form.text_field :username, class: "form-control", placeholder: 'user name' %>
+  <%= form.text_field :username, class: "form-control", placeholder: 'user name', :disabled => !player.editable? %>
 </div>
 
 <div class="form-group">
   <%= form.label :firstname, 'First Name' %><br>
-  <%= form.text_field :firstname, class: "form-control", placeholder: 'first name' %>
+  <%= form.text_field :firstname, class: "form-control", placeholder: 'first name', :disabled => !player.editable? %>
 </div>
 
 <div class="form-group">
   <%= form.label :lastname, 'Last Name' %><br>
-  <%= form.text_field :lastname, class: "form-control", placeholder: 'last name' %>
+  <%= form.text_field :lastname, class: "form-control", placeholder: 'last name', :disabled => !player.editable? %>
 </div>
 
 <div class="form-group">
   <%= form.label :email, 'Email' %><br>
-  <%= form.text_field :email, class: "form-control", placeholder: 'email address' %>
+  <%= form.text_field :email, class: "form-control", placeholder: 'email address', :disabled => !player.editable? %>
 </div>

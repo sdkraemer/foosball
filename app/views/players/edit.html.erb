@@ -9,14 +9,10 @@
 <div class="panel panel-default">
   <div class="panel-heading"><h5><strong>Player Form</strong></h5></div>
   <div class="panel-body">
-    <%= form_for :player, url: player_path(@player), method: :patch do |f| %>
+    <%= form_for @player, url: player_path(@player), method: :patch do |f| %>
 
       <% if @player.errors.any? %>
         <div id="error_explanation">
-          <h2>
-            <%= pluralize(@player.errors.count, "error") %> prohibited
-            this article from being saved:
-          </h2>
           <ul>
             <% @player.errors.full_messages.each do |msg| %>
               <li><%= msg %></li>
@@ -25,16 +21,17 @@
         </div>
       <% end %>
 
-      <%= render 'form', :form => f %>
+      <%= render :partial => 'form', :locals => { :form => f, :player => @player } %>
 
-      <% if (current_player.username == @player.username) or 
-            (player_signed_in? && current_player.admin?) then %>
+      <% if @player.editable? %>
         <div class="form-group">
           <%= f.submit "Update Player", class: 'btn btn-primary btn-sm'%>
         </div>
-      <% end %>
-      <% if current_player.username == @player.username %>
-        <%= link_to "Update Password", edit_player_registration_path(@player) %>
+        <% if @player.current_player? %>
+          <div class="form-group">
+            <%= link_to "Update Password", edit_player_registration_path(@player), class: 'btn btn-default btn-sm' %>
+          </div>
+        <% end %>
       <% end %>
     <% end %>
   </div>

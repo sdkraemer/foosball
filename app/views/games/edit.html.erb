@@ -75,40 +75,42 @@
   
 
   <% if @game.has_goals? then %>
-
     <div class="panel panel-default">
-    <div class="panel-heading"><h5><strong>Goals Scored</strong></h5></div>
-    <div class="panel-body panel-overflow-x">
-      <span style="width:auto;">
-        <table class="table table-hover table-condensed" style="width:auto;">
-          <thead>
-            <tr>
-              <td>Goal #</td>
-              <td>Player</td>
-              <td>Scored At</td>
-              <td class="blueteam">Blue</td>
-              <td class="redteam">Red</td>
-              <td>Comments</td>
-            </tr>
-          </thead>
-          <tbody>
-            <% @game.goals_ordered.each_with_index do |goal, index| %>
+      <div class="panel-heading">
+        <h5><strong>Goals Scored</strong></h5>
+      </div>
+      <div class="panel-body panel-overflow-x">
+        <span style="width:auto;">
+          <table class="table table-hover table-condensed" style="width:auto;">
+            <thead>
               <tr>
-                <td><%= (index+1) %></td>
-                <td><%= goal.player.firstname.humanize %></td>
-                <td><%= goal.created_at %></td>
-                <td class="<%= "info" if goal.blue_goal? %>"><%= @game.teams.blue.first.get_team_score_at(goal) %></td>
-                <td class="<%= "info" if goal.red_goal?  %>"><%= @game.teams.red.first.get_team_score_at(goal) %></td>
-                <td class="<%= "danger" if goal.own_goal? %>">
-                <% if goal.own_goal? %>
-                  (Own Goal)
-                <% end %>
-                </td>
+                <td>Goal #</td>
+                <td>Player</td>
+                <td>Scored At</td>
+                <td class="blueteam">Blue</td>
+                <td class="redteam">Red</td>
+                <td>Comments</td>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </span>
+            </thead>
+            <tbody>
+              <% @game.goals_ordered.each_with_index do |goal, index| %>
+                <tr>
+                  <td><%= (index+1) %></td>
+                  <td><%= goal.player.firstname.humanize %></td>
+                  <td><%= goal.created_at %></td>
+                  <td class="<%= "info" if goal.blue_goal? %>"><%= @game.teams.blue.first.get_team_score_at(goal) %></td>
+                  <td class="<%= "info" if goal.red_goal?  %>"><%= @game.teams.red.first.get_team_score_at(goal) %></td>
+                  <td class="<%= "danger" if goal.own_goal? %>">
+                  <% if goal.own_goal? %>
+                    (Own Goal)
+                  <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </span>
+      </div>
     </div>
   <% end %>
 </center>
