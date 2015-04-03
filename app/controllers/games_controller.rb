@@ -17,6 +17,7 @@ class GamesController < ApplicationController
  		#all of this will be moved to a service object or in the model. Refactored soon
  		@game = Game.new_game(params)
  		@players = Player.all.order(:firstname)
+ 		@selected_players = []
 
  		@blue_team_players = Player.all.order(:firstname)
  		@red_team_players = Player.all.order(:firstname)
@@ -75,14 +76,24 @@ class GamesController < ApplicationController
  	end
 
  	def player_dropdown
- 		selected_players = Player.find(player_params[:player_id])
-		#Something.where.not(name: User.unverified.pluck(:name))
+ 		selected_players_id = player_params[:selected_players_id]
+ 		if selected_players_id == nil
+ 			selected_players_id = []
+ 		end
 
- 		available_players = Player.where.not(id: player_params[:player_id])
+ 		if player_params[:commit] == "Add Player"
+ 			selected_players_id << player_params[:add_player_id]
+ 		elsif player_params[:commit] == "Remove Player"
+ 			if player_params[:remove_player_id]
+ 				selected_players_id.delete(player_params[:remove_player_id])
+ 			end
+ 		end
 
- 		#selected_players = Player.find(player_params[id])
- 		#available_players = Player.not(selected_players)
- 		render partial: "games/player_dropdown", locals: {selected_players: available_players}
+		selected_players = Player.find(selected_players_id)
+
+ 		available_players = Player.where.not(id: selected_players_id)
+
+ 		render partial: "player_list", locals: { selected_players: selected_players, available_players: available_players } 
  	end
 
  	#need to move this to model or service object
@@ -105,7 +116,7 @@ class GamesController < ApplicationController
 
  	private
 	  def game_params
-	    params.require(:game).permit( :id, :teams_attributes => [:id, :color, :positions_attributes => [:id, :player_id, :position_type]])
+	    params.require(:game).permit( :id, :teams_attributes => [:id, :color, :positions_attributes => [:id, :selected_players_id, :position_type]])
 	  end
 
 	  def undo_params
@@ -113,6 +124,6 @@ class GamesController < ApplicationController
 	  end
 
 	  def player_params
-	  	params.permit(player_id: [])
+	  	params.permit(:player_id, :commit, :remove_player_id, :add_player_id, :selected_players_id => [])
 	  end
 end

@@ -39,3 +39,10 @@
       $form.submit()
     }
   }
+
+  $(document).ready(function(){
+    $("#form_player_list").on("ajax:success", function(e, data, status, xhr){
+      $("#div-playerlist").html(xhr.responseText)
+    });
+
+  });
