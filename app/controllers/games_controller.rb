@@ -15,9 +15,8 @@ class GamesController < ApplicationController
 
  	def new
  		#all of this will be moved to a service object or in the model. Refactored soon
- 		@game = Game.new_game(params)
+ 		@game = Game.new_game
  		@players = Player.all.order(:firstname)
- 		@selected_players = []
 
  		@blue_team_players = Player.all.order(:firstname)
  		@red_team_players = Player.all.order(:firstname)
@@ -56,8 +55,6 @@ class GamesController < ApplicationController
  	end
 
  	def index
- 		#@games = Game.includes(:teams).order("created_at desc").paginate(:page => params[:page], :per_page => 1)
- 		#@games = GameDecorator.decorate_collection(Game.includes(:teams).order("created_at desc").paginate(:page => params[:page], :per_page => 10))
  		@games = GameDecorator.decorate_collection(Game.includes(:teams).order("created_at desc").paginate(:page => params[:page], :per_page => 10))
  	end
 
@@ -71,21 +68,42 @@ class GamesController < ApplicationController
  		@blue_team_players = Player.all.order(:firstname)
  		@red_team_players = Player.all.order(:firstname)
 
- 		#redirect_to new_game_path(@game)
  		render :action => :new
  	end
 
+ 	def add_player
+ 		selected_players = Player.find(setup_params[:player_id])
+
+		selected_players_id = selected_players.map(&:id)
+ 		available_players = Player.where.not(id: selected_players_id)
+
+ 		render partial: "setup_game_modal", locals: { selected_players: selected_players, available_players: available_players, game: nil }
+ 	end
+
+ 	def remove_player
+ 		player_ids = setup_params[:player_id]
+ 		#remove player id from selected list
+ 		player_ids.delete(setup_params[:remove_id])
+
+ 		selected_players = Player.find(player_ids)
+ 		
+ 		selected_players_id = selected_players.map(&:id)
+ 		available_players = Player.where.not(id: selected_players_id)
+
+ 		render partial: "setup_game_modal", locals: { selected_players: selected_players, available_players: available_players, game: nil }
+ 	end
+
  	def player_dropdown
- 		selected_players_id = player_params[:selected_players_id]
+ 		selected_players_id = setup_params[:selected_players_id]
  		if selected_players_id == nil
  			selected_players_id = []
  		end
 
- 		if player_params[:commit] == "Add Player"
- 			selected_players_id << player_params[:add_player_id]
- 		elsif player_params[:commit] == "Remove Player"
- 			if player_params[:remove_player_id]
- 				selected_players_id.delete(player_params[:remove_player_id])
+ 		if setup_params[:commit] == "Add Player"
+ 			selected_players_id << setup_params[:add_id]
+ 		elsif setup_params[:commit] == "Remove Player"
+ 			if setup_params[:remove_player_id]
+ 				selected_players_id.delete(setup_params[:remove_player_id])
  			end
  		end
 
@@ -99,31 +117,37 @@ class GamesController < ApplicationController
  	#need to move this to model or service object
  	def generate_teams
  		#seems redundant..just want to make sure I have actual players. Could remove this and stick with what is passed in player_id params
- 		selected_players = Player.find(player_params[:player_id]).map(&:id)
- 		teams = Game.generate_random_teams(selected_players)
+ 		selected_players = Player.find(setup_params[:player_id])
+ 		selected_players_id = selected_players.map(&:id)
+ 		available_players = Player.where.not(id: selected_players_id)
 
- 		@blue_team_players = Player.find(teams[0])
- 		@blue_team_names = @blue_team_players.map(&:username).map{|s| s.humanize()}.join(", ")
+ 		game = Game.new_game
+ 		game.generate_random_teams(selected_players);
 
- 		@red_team_players = Player.find(teams[1])
- 		@red_team_names = @red_team_players.map(&:username).map{|s| s.humanize()}.join(", ")
+ 		render partial: "setup_game_modal", locals: { selected_players: selected_players, available_players: available_players, game: game}
+ 	end
 
- 		@game = Game.new_game(params)
+ 	def setup_submit
+ 		@game = Game.new_game
+
  		@players = Player.all.order(:firstname)
+
+ 		@blue_team_players = Player.find(setup_params[:blue_team])
+ 		@red_team_players = Player.find(setup_params[:red_team])
 
  		render :new
  	end
 
  	private
 	  def game_params
-	    params.require(:game).permit( :id, :teams_attributes => [:id, :color, :positions_attributes => [:id, :selected_players_id, :position_type]])
+	    params.require(:game).permit( :id, :teams_attributes => [:id, :color, :positions_attributes => [:id, :player_id, :position_type]])
 	  end
 
 	  def undo_params
 	  	params.permit(:id)
 	  end
 
-	  def player_params
-	  	params.permit(:player_id, :commit, :remove_player_id, :add_player_id, :selected_players_id => [])
+	  def setup_params
+	  	params.permit(:id, :commit, :remove_player_id, :remove_id, :add_id, :player_id => [], :blue_team => [], :red_team => [])
 	  end
 end

@@ -1,6 +1,7 @@
+$blue: rgba(136, 153, 195, 1);
+$red: #D09191;
+
 $navbar-default-color: #3ec303;
-
-
 
 $navbar-default-link-active-bg: #3ec303;
 $navbar-default-link-color: #3ec303;
@@ -111,11 +112,19 @@ body {
 
 //Custom Foos app CSS
 .redteam{
-  background-color: rgb(215, 128, 128) !important;
+  background-color: $red !important;
+}
+
+.blue-font{
+  color: $blue;
+}
+
+.red-font{
+  color: $red;
 }
 
 .blueteam{
-  background-color: rgb(146, 162, 203) !important;
+  background-color: $blue !important;
 }
 
 .foos{

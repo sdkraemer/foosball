@@ -41,8 +41,14 @@
   }
 
   $(document).ready(function(){
-    $("#form_player_list").on("ajax:success", function(e, data, status, xhr){
-      $("#div-playerlist").html(xhr.responseText)
+
+    $("#modal-content").on("ajax:success", function(e, data, status, xhr){
+      $("#modal-content").html(xhr.responseText)
     });
+
+    $("#modal-content").on("click", ".generate-teams-button, .add-player-button", function () {
+      $(this).button('loading')
+    });
+
 
   });

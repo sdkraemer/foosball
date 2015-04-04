@@ -1,0 +1,10 @@
+/* line 4, C:/Sites/foosball_app/app/assets/stylesheets/games.css.scss */
+.table-padding td {
+  padding-bottom: .25em;
+}
+
+/* line 8, C:/Sites/foosball_app/app/assets/stylesheets/games.css.scss */
+tr.position-row td {
+  text-align: center;
+  padding-bottom: .5em !important;
+}

@@ -13,6 +13,19 @@ class Team < ActiveRecord::Base
   scope :blue, -> {where(color: 0)}
   scope :red, -> {where(color: 1)}
 
+  #add a player to the pending player list
+  def add_pending_player(player)
+    if(!@pending_players)
+      @pending_players = [] 
+    end
+
+    @pending_players << player
+  end
+
+  def pending_players
+    @pending_players
+  end
+
   def opposing_team
     @opposing_team ||= self.game.teams.where.not(id: self.id).first
   end

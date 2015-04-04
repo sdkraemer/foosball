@@ -11,6 +11,9 @@ FoosballApp::Application.routes.draw do
   resources :games do
     post :generate_teams, on: :new
     post :player_dropdown, on: :new
+    post :add_player, on: :new
+    post :remove_player, on: :new
+    post :setup_submit, on: :new
     member do 
       post :undo
       post :rematch

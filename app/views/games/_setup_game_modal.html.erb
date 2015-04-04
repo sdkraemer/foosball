@@ -1,0 +1,71 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title" id="modal-label">Select the Competitors!</h4>
+</div>
+<div class="modal-body">         
+  <div class="container-fluid">
+  	<%= form_tag(add_player_new_game_path, id: "form_add_player", remote: true) do %>
+
+    	<% selected_players.each do |player| %>
+    		<%= hidden_field_tag "player_id[]", player.id, {id: nil} %>
+    	<% end %>
+
+    	<div class="panel panel-default">
+  			<div class="panel-body">
+			    <div class="row">
+			    	<div class="col-xs-6">
+			    		<%= select_tag "player_id[]", 
+			    					options_for_select(available_players.collect{|player| ["#{player.firstname.humanize}, #{player.lastname.humanize}", player.id]}), id: nil, class: "form-control" %>
+			    	</div>
+			    	<div class="col-xs-6">
+							<%= submit_tag 'Add Player', class: "btn btn-large btn-default add-player-button", "data-loading-text" => "Adding Player..." %>
+			    	</div>
+					</div>
+				</div>
+			</div>
+		<% end %>
+
+    <%= render partial: "modal_player_list", locals: { selected_players: selected_players } %>
+
+	  <% if game != nil %>
+	  	<div class="panel panel-default">
+	  		<div class="panel-heading">
+	        <h5><strong>Generated Teams</strong></h5>
+	      </div>
+	  		<div class="panel-body">
+			  	<% game.teams.each_with_index do |team, index| %>
+			  		<% if index == 1 %>
+			  			<strong>Versus</strong>
+			  		<% end %>
+			  		<span class="<%= team.color %>-font"><strong><%= team.pending_players.map(&:username).map{|s| s.humanize()}.join(", ") %></strong></span>
+			  	<% end %>
+			  </div>
+		  </div>
+		<% end %>
+	</div> 
+</div>
+<div class="modal-footer">
+  <%= form_tag(generate_teams_new_game_path, id: "form_generate_teams", remote: true, class: "pull-right") do %>
+    <% selected_players.each do |player| %>
+      <%= hidden_field_tag "player_id[]", player.id %>
+    <% end %>
+    <%= button_tag 'Generate Teams', :type => "submit", :name => 'submit_button', class: "btn btn-large btn-primary generate-teams-button", "data-loading-text" => "Loading..." %>
+  <% end %>
+
+  <% if game != nil %>
+		<%= form_tag(setup_submit_new_game_path, id: "submit-setup-form", class: "pull-right") do %>
+	    <% game.teams.each_with_index do |team, index| %>
+	    	<% if team.color =="blue" %>
+	    		<% team.pending_players.each do |player| %>
+	    			<%= hidden_field_tag "blue_team[]", player.id, {id: nil} %>
+	    		<% end %>
+	    	<% else %>
+	    		<% team.pending_players.each do |player| %>
+	    			<%= hidden_field_tag "red_team[]", player.id, {id: nil} %>
+	    		<% end %>
+	    	<% end %>
+	    <% end %>
+	    <%= button_tag 'Lets Go!', :type => "submit", :name => 'submit_button', class: "btn btn-large btn-primary generate-teams-button", "data-loading-text" => "Loading..." %>
+	  <% end %>
+	<% end %>
+</div>

@@ -1,7 +1,7 @@
 <%= link_to "Setup Game", '#' , class: "btn btn-large btn-default", data: { :toggle => "modal", :target => "#modal-playerpicker"} %>
 <br>
 <br>
-<%= form_for @game, url:{action: "create"}, html:{method: "post"} do |f| %>
+<%= form_for @game, url:{action: "create"}, html:{method: "post", class: "form-horizontal"} do |f| %>
     
 
     <%= f.hidden_field :id %>
@@ -9,29 +9,25 @@
       <div class="panel panel-default">
         <div class="panel-heading <%= team_builder.object.color%>team">
           <h3 class="panel-title"> 
-            Team <%= team_builder.object.color.humanize %> 
-            <% if team_builder.object.color == "blue" && @blue_team_names %>
-              <%= ": "+@blue_team_names %>
-            <% elsif team_builder.object.color == "red" && @red_team_names %>
-              <%= ": "+@red_team_names %>
-            <% end %>
+            <strong>Team <%= team_builder.object.color.humanize %></strong>
           </h3>
         </div>
         <div class="panel-body">
           <%= team_builder.hidden_field :color %>
           <div class="container-fluid">
             <%= team_builder.fields_for :positions do |position_builder| %>
-              <div class="row">
-                <%= position_builder.hidden_field :position_type %>
-                <div class="col-md-1"><%= position_builder.object.position_type.humanize%>:</div> 
-                <div class="col-md-1">
+              <div class="form-group">
+                <div class="col-sm-1">
+                  <label><%= position_builder.object.position_type.humanize%></label>
+                </div>
+                <div class="col-sm-5">
+                  <%= position_builder.hidden_field :position_type %>
                   <% if team_builder.object.color == "blue" %>
-                    <%= position_builder.select(:player_id, options_for_select(@blue_team_players.collect {|player| [player.firstname.humanize, player.id]}, position_builder.object.player_id)) %>
+                    <%= position_builder.select(:player_id, options_for_select(@blue_team_players.collect {|player| [player.firstname.humanize, player.id]}, position_builder.object.player_id), {}, {class: "form-control"}) %>
                   <% else %>
-                    <%= position_builder.select(:player_id, options_for_select(@red_team_players.collect {|player| [player.firstname.humanize, player.id]}, position_builder.object.player_id)) %>
+                    <%= position_builder.select(:player_id, options_for_select(@red_team_players.collect {|player| [player.firstname.humanize, player.id]}, position_builder.object.player_id), {}, {class: "form-control"}) %>
                   <% end %>
                 </div>
-                
               </div>
             <% end %>
           </div>
@@ -49,29 +45,8 @@
 <!-- Team GeneratorModal -->
 <div class="modal fade" id="modal-playerpicker" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-          <h4 class="modal-title" id="modal-label">Select the Competitors!</h4>
-        </div>
-        <%= form_tag(player_dropdown_new_game_path, remote: true, id: "form_player_list") do %>
-          <div class="modal-body">
-            
-              <div id="div-playerlist" class="container-fluid">
-                <%= render partial: "player_list", locals: { selected_players: @selected_players, available_players: @players } %>
-              </div>
-            
-          </div>
-        <% end %>
-        <div class="modal-footer">
-          <%= form_tag(generate_teams_new_game_path, id: "form_generate_teams") do %>
-            <% @selected_players.each do |player| %>
-              <%= hidden_field_tag "player_id[]", player.id %>
-            <% end %>
-            <%= submit_tag 'Lets Go!', :name => 'submit_button', class: "btn btn-large btn-primary" %>
-          <% end %>
-        </div>
-        
+    <div class="modal-content" id="modal-content"> 
+      <%= render "setup_game_modal", selected_players: [], available_players: @players, game: nil  %>
     </div>
   </div>
 </div>

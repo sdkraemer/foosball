@@ -1,0 +1,19 @@
+<ul class="list-group">
+  <% selected_players.each do |player| %>
+		<li class="list-group-item">
+			<%= form_tag(remove_player_new_game_path,id: "form_remove_player", remote: true) do %>
+				<%= hidden_field_tag "remove_id", player.id %>
+				<% selected_players.each do |input_player| %>
+					<%= hidden_field_tag "player_id[]", input_player.id %>
+				<% end %>
+				<button type="submit" class="btn btn-default" aria-label="Remove Player">
+				  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+				</button>
+	    	<strong><%= player.firstname.humanize %>,<%= player.lastname.humanize %></strong>
+	    <% end %>
+    </li>
+	 <% end %>
+
+</ul>
+
+
