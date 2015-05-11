@@ -1,0 +1,33 @@
+<tr class="position-row">
+  <td class="pull-right">
+    <% if red_position.goals.own_goal.count > 0 then %>
+      <span class="badge alert-danger"><%= red_position.goals.own_goal.count %></span>
+    <% end %>
+    <% if red_position.goals.scored_goal.count > 0 then %>
+      <span class="badge alert-success"><%= red_position.goals.scored_goal.count %></span>
+    <% end %>
+    <small><%= red_position.player.username.humanize %></small>
+  </td>
+  <td>
+    <%= form_tag(score_position_path( red_position ), class: "form-goal-scored") do %>
+      <input type="hidden" name="quantity" value="1"/>
+      <%= submit_tag 'Goal',class: "btn btn-default bold", style: "font-weight:bold;" %>
+    <% end %>
+  </td>
+  <td><strong><%= position %></strong></td>
+  <td>
+    <%= form_tag(score_position_path( blue_position ), class: "form-goal-scored") do %>
+      <input type="hidden" name="quantity" value="1"/>
+      <%= submit_tag 'Goal',class: "btn btn-default bold", style: "font-weight:bold;" %>
+    <% end %>
+  </td>
+  <td class="pull-left">
+    <small><%= blue_position.player.username.humanize %></small>
+    <% if blue_position.goals.own_goal.count > 0 then %>
+      <span class="badge alert-danger"><%= blue_position.goals.own_goal.count %></span>
+    <% end %>
+    <% if blue_position.goals.scored_goal.count > 0 then %>
+      <span class="badge alert-success"><%= blue_position.goals.scored_goal.count %></span>
+    <% end %>
+  </td>
+</tr>

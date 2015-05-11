@@ -1,6 +1,6 @@
 FoosballApp::Application.routes.draw do
   devise_for :players
-  get 'position/score'
+  #get 'position/score'
 
   #get "players/index"
   #get "players/new"
@@ -19,16 +19,20 @@ FoosballApp::Application.routes.draw do
       post :rematch
     end
     
-    resources :teams do
-      resources :positions do
-        member do 
-          post 'score'
-        end 
-      end
-    end
+    #resources :teams do
+    #  resources :positions do
+    #    member do 
+    #      post 'score'
+    #    end 
+    #  end
+    #end
   end
 
-  resources :positions
+  resources :positions do
+    member do
+      post :score
+    end
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

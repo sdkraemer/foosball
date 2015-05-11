@@ -1,36 +1,25 @@
-<% red_position = @redteam.positions.where(position_type: position_type).first %>
-<% blue_position = @blueteam.positions.where(position_type: position_type).first %> 
-
-<tr class="position-row">
-  <td class="pull-right" style="white-space:nowrap">
-    <% if red_position.goals.own_goal.count > 0 %>
+<div class="position-row">
+  <div class="column">
+    <% if red_position.goals.own_goal.count > 0 then %>
       <span class="badge alert-danger"><%= red_position.goals.own_goal.count %></span>
     <% end %>
-    <% if red_position.goals.scored_goal.count > 0 %>
+    <% if red_position.goals.scored_goal.count > 0 then %>
       <span class="badge alert-success"><%= red_position.goals.scored_goal.count %></span>
     <% end %>
-    <span style="margin:.25em;"><%= red_position.player.firstname.humanize %></span>
-  </td>
-  <td>
-      <%= form_for [@game, @redteam, red_position], url: score_game_team_position_path(@game, @redteam, red_position), html:{method: "post"} do |f|%>
-        <%= hidden_field_tag :quantity, "1" %>
-        <%= f.button("Goal", :class => 'btn btn-primary', :type => :button, :onclick => 'game.score_goal(this)', :disabled => (@game.completed? || !player_signed_in?) ) %>
-      <% end %>
-  </td>
-  <td><label><%= position.humanize %></label></td>
-  <td>
-      <%= form_for [@game, @blueteam, blue_position], url: score_game_team_position_path(@game, @blueteam, blue_position), html:{method: "post"} do |f|%>
-        <%= hidden_field_tag :quantity, "1" %>
-        <%= f.button("Goal", :class => 'btn btn-primary', :type => :button, :onclick => 'game.score_goal(this)', :disabled => (@game.completed? || !player_signed_in?) )%>
-      <% end %>
-  </td>
-  <td class="pull-left" style="white-space:nowrap">
-    <span style="margin:.25em;"><%= blue_position.player.firstname.humanize %></span>
-    <% if blue_position.goals.scored_goal.count > 0 %>
-      <span class="badge alert-success"><%= blue_position.goals.scored_goal.count %></span>
-    <% end %>
-    <% if blue_position.goals.own_goal.count > 0 %>
+  </div>
+  <div class="left column">
+    <%= button_to "Goal", score_position_path( red_position ), class: "btn btn-default bold", style: "font-weight:bold;"%>
+  </div>
+  <div class="center column"><strong><%= position %></strong></div>
+  <div class="right column">
+    <%= button_to "Goal", score_position_path( blue_position ), class: "btn btn-default bold", style: "font-weight:bold;"%>
+  </div>
+  <div class="column">
+    <% if blue_position.goals.own_goal.count > 0 then %>
       <span class="badge alert-danger"><%= blue_position.goals.own_goal.count %></span>
     <% end %>
-  </td>
-</tr>
+    <% if blue_position.goals.scored_goal.count > 0 then %>
+      <span class="badge alert-success"><%= blue_position.goals.scored_goal.count %></span>
+    <% end %>
+  </div>
+</div>

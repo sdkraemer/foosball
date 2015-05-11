@@ -113,6 +113,10 @@ class Game < ActiveRecord::Base
 		end
 	end
 
+	def setup_submit
+
+	end
+
 	def winning_team
 		self.teams.where(winner: true).first
 	end

@@ -1,4 +1,18 @@
-<%= stylesheet_link_tag    "games", :media => "all" %>
+<%= stylesheet_link_tag "games", :media => "all" %>
+<script>
+  $(document).ready(function(){
+    $(".form-goal-scored").on("submit", function(eo){
+      var $form = $(eo.currentTarget);
+      var $checkbox_own_goal = $("#checkbox-own-goal");
+
+      console.dir($form);
+      console.dir($checkbox_own_goal);
+      if( $checkbox_own_goal.is(":checked") ){
+        $form[0].quantity.value = $("#checkbox-own-goal").val();
+      }
+    });
+  });
+</script>
 <center>
   <div class="div-foos-title"/>
     <h1 class="foos">Game View</h1>
@@ -31,47 +45,46 @@
   <br>
   <br>
 
-  
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h5><strong>Scoreboard</strong></h5>
-      </div>
-      <div class="panel-body panel-overflow-x">
-        <div style="min-width:200px;display:inline-block;text-align:center;padding:.5em;margin:.25em;">
-          <table style="width:100%;" class="table-padding">
-            <tbody>
-              <tr>
-                <td></td>
-                <td style="text-align:center;">
-                  <span class="<%= @redteam.color %>team scoreboard-score">
-                    <%= @redteam.get_goals_total %>
-                  </span>
-                </td>
-                <td style="text-align:center;">
-                  <div>Own Goal?</div>
-                  <input type="checkbox" id="checkbox-owngoal" value="-1"/>
-                </td>
-                <td style="text-align:center;">
-                  <span class="<%= @blueteam.color %>team scoreboard-score">
-                    <%= @blueteam.get_goals_total %>
-                  </span>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td colspan="5">
-                  <div class="break"></div>
-                </td>
-              </tr>
 
-            <% @positions.each do |position, position_type| %>
-              <%= render "position_row", :game => @game, :redteam => @red_team, :blueteam => @blueteam, :position => position, :position_type => position_type %>
-            <% end %>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h5><strong>Scoreboard</strong></h5>
     </div>
+    <div class="panel-body panel-overflow-x">
+
+      <%= button_to "Undo Goal", undo_game_path(@game), class: "btn btn-default btn-sm", style: "margin: .5em; font-weight:bold;" %>
+
+      <table class="panel scoreboard">
+
+        <tr class="header">
+          <td class="red-team-column" colspan="2">
+              <strong class="red-font">Team Red</strong>
+              <span class="glyphicon glyphicon-user red-font" aria-hidden="true" style="font-size: 18px;"></span>
+          </td>
+          <td class="score-column">
+              <strong style="font-size: 1.6em;color: rgb(51,51,51);line-height: 1.6em;"><%= @redteam.get_goals_total %> - <%= @blueteam.get_goals_total %></strong>
+          </td>
+          <td class="blue-team-column" colspan="2">
+              <span class="glyphicon glyphicon-user blue-font" aria-hidden="true" style="font-size: 18px;"></span>
+              <strong class="blue-font">Team Blue</strong>
+          </td>
+        </tr><!-- end header -->
+        <tr>
+          <td colspan="5" style="text-align:center;">
+              <label for="checkbox-own-goal"><small>Own Goal:</small></label>
+              <input type="checkbox" id="checkbox-own-goal" name="quantity" value="-1"/>
+          </td>
+        </tr>
+
+        <%= render :partial => 'position_row_tr', :locals => { :position => 'Striker', :red_position => @game.teams.red.first.positions.striker, :blue_position => @game.teams.blue.first.positions.striker } %>
+        <%= render :partial => 'position_row_tr', :locals => { :position => 'Midfield', :red_position => @game.teams.red.first.positions.midfield, :blue_position => @game.teams.blue.first.positions.midfield } %>
+        <%= render :partial => 'position_row_tr', :locals => { :position => 'Defense', :red_position => @game.teams.red.first.positions.defense, :blue_position => @game.teams.blue.first.positions.defense } %>
+        <%= render :partial => 'position_row_tr', :locals => { :position => 'Goalie', :red_position => @game.teams.red.first.positions.goalie, :blue_position => @game.teams.blue.first.positions.goalie } %>
+      </table>
+    </div>
+
+  </div>
+   
   
 
   <% if @game.has_goals? then %>
@@ -84,12 +97,12 @@
           <table class="table table-hover table-condensed" style="width:auto;">
             <thead>
               <tr>
-                <td>Goal #</td>
-                <td>Player</td>
-                <td>Scored At</td>
-                <td class="blueteam">Blue</td>
-                <td class="redteam">Red</td>
-                <td>Comments</td>
+                <td><strong>Goal #</strong></td>
+                <td><strong>Player</strong></td>
+                <td><strong>Scored At</strong></td>
+                <td class="blueteam"><strong>Blue</strong></td>
+                <td class="redteam"><strong>Red</strong></td>
+                <td><strong>Type</strong></td>
               </tr>
             </thead>
             <tbody>

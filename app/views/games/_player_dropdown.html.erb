@@ -1,3 +1,0 @@
-<div class="form-group">
-	<%= select_tag "add_player_id", options_for_select(available_players.collect{|player| ["#{player.firstname.humanize}, #{player.lastname.humanize}", player.id]}), id: nil %>
-</div>

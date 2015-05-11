@@ -1,13 +1,73 @@
 // Place all the styles related to the Game controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-.table-padding td{
-      padding-bottom: .25em;
+
+$team-column-width: 40%;
+$position-column-width: 20%;
+
+
+.scoreboard{
+	display: inline-block;
+  min-width: 400px;
+  border-color: #eee;
+  display: table;
+
+  td{
+  	text-align:center;
+  }
+
+  .header{
+  	background-color: #eee;
+	  overflow: auto;
+	  display: table-row;
+
+	  td{
+	  	border-style: solid;
+	  	border-width: 0px 0px 2px 0px;
+	  	border-color: #E4E4E4;
+	  }
+
+	  .column{
+	  	display: table-cell;
+	  	border-style: solid;
+	  	border-width: 0px 0px 2px 0px;
+	  	border-color: #E4E4E4;
+	  }
+
+  	.red-team-column{
+  		width: $team-column-width;
+  	}
+
+  	.score-column{
+  		width: $position-column-width;
+  	}
+
+  	.blue-team-column{
+  		width: $team-column-width;
+  	}
+
+  }
+
+	.position-row{
+		overflow: auto;
+		display: table-row;
+
+		td{
+			padding: .25em .25em .25em .25em;
+		}
+
+		.column{
+	  	display: table-cell;
+	  	padding: .5em 0em .5em 0em;
+	  }
+	}
+
 }
 
-tr.position-row td{
-	text-align:center;
-	padding-bottom: .5em !important;
+.position-row:nth-child(odd){
+	background-color: rgba(249, 249, 249, 1);
 }
+
+
 
 
