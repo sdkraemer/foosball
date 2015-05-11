@@ -8,27 +8,16 @@ $position-column-width: 20%;
 
 .scoreboard{
 	display: inline-block;
-  min-width: 400px;
   border-color: #eee;
-  display: table;
 
   td{
-  	text-align:center;
+  	text-align: center;
   }
 
   .header{
   	background-color: #eee;
-	  overflow: auto;
-	  display: table-row;
 
 	  td{
-	  	border-style: solid;
-	  	border-width: 0px 0px 2px 0px;
-	  	border-color: #E4E4E4;
-	  }
-
-	  .column{
-	  	display: table-cell;
 	  	border-style: solid;
 	  	border-width: 0px 0px 2px 0px;
 	  	border-color: #E4E4E4;
@@ -39,7 +28,7 @@ $position-column-width: 20%;
   	}
 
   	.score-column{
-  		width: $position-column-width;
+  	  width: $position-column-width;
   	}
 
   	.blue-team-column{
@@ -49,17 +38,9 @@ $position-column-width: 20%;
   }
 
 	.position-row{
-		overflow: auto;
-		display: table-row;
-
 		td{
 			padding: .25em .25em .25em .25em;
 		}
-
-		.column{
-	  	display: table-cell;
-	  	padding: .5em 0em .5em 0em;
-	  }
 	}
 
 }
