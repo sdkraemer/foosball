@@ -6,28 +6,35 @@
     <% if red_position.goals.scored_goal.count > 0 then %>
       <span class="badge alert-success"><%= red_position.goals.scored_goal.count %></span>
     <% end %>
-    <small><%= red_position.player.username.humanize %></small>
+    
   </td>
   <td>
-    <%= form_tag(score_position_path( red_position ), class: "form-goal-scored") do %>
-      <input type="hidden" name="quantity" value="1"/>
-      <%= submit_tag 'Goal',class: "btn btn-default bold", style: "font-weight:bold;" %>
+    <% if not game.completed? %>
+      <%= form_tag(score_position_path( red_position ), class: "form-goal-scored") do %>
+        <input type="hidden" name="quantity" value="1"/>
+        <%= submit_tag 'Goal',class: "btn btn-default bold", style: "font-weight:bold;" %>
+      <% end %>
+    <% else %>
+      <strong><%= red_position.player.username.humanize %></strong>
     <% end %>
   </td>
-  <td><strong><%= position %></strong></td>
+  <td style="font-weight:bold;"><small><%= position %></small></td>
   <td>
-    <%= form_tag(score_position_path( blue_position ), class: "form-goal-scored") do %>
-      <input type="hidden" name="quantity" value="1"/>
-      <%= submit_tag 'Goal',class: "btn btn-default bold", style: "font-weight:bold;" %>
+    <% if not game.completed? %>
+      <%= form_tag(score_position_path( blue_position ), class: "form-goal-scored") do %>
+        <input type="hidden" name="quantity" value="1"/>
+        <%= submit_tag 'Goal',class: "btn btn-default bold", style: "font-weight:bold;" %>
+      <% end %>
+    <% else %>
+      <strong><%= blue_position.player.username.humanize %></strong>
     <% end %>
   </td>
   <td class="pull-left">
-    <small><%= blue_position.player.username.humanize %></small>
-    <% if blue_position.goals.own_goal.count > 0 then %>
-      <span class="badge alert-danger"><%= blue_position.goals.own_goal.count %></span>
-    <% end %>
     <% if blue_position.goals.scored_goal.count > 0 then %>
       <span class="badge alert-success"><%= blue_position.goals.scored_goal.count %></span>
+    <% end %>
+    <% if blue_position.goals.own_goal.count > 0 then %>
+      <span class="badge alert-danger"><%= blue_position.goals.own_goal.count %></span>
     <% end %>
   </td>
 </tr>

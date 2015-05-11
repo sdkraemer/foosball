@@ -60,3 +60,10 @@ rake assets:precompile
 
 #check heroku logs
 heroku logs
+
+
+#branching
+git checkout -b [name_of_your_new_branch]
+git push origin [name_of_your_new_branch]
+git push origin [name_of_your_remote]
+git push heroku issue41:master

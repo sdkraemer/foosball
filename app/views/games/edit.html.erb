@@ -76,10 +76,10 @@
           </td>
         </tr>
 
-        <%= render :partial => 'position_row_tr', :locals => { :position => 'Striker', :red_position => @game.teams.red.first.positions.striker, :blue_position => @game.teams.blue.first.positions.striker } %>
-        <%= render :partial => 'position_row_tr', :locals => { :position => 'Midfield', :red_position => @game.teams.red.first.positions.midfield, :blue_position => @game.teams.blue.first.positions.midfield } %>
-        <%= render :partial => 'position_row_tr', :locals => { :position => 'Defense', :red_position => @game.teams.red.first.positions.defense, :blue_position => @game.teams.blue.first.positions.defense } %>
-        <%= render :partial => 'position_row_tr', :locals => { :position => 'Goalie', :red_position => @game.teams.red.first.positions.goalie, :blue_position => @game.teams.blue.first.positions.goalie } %>
+        <%= render :partial => 'position_row_tr', :locals => { :position => 'Striker', :red_position => @game.teams.red.first.positions.striker, :blue_position => @game.teams.blue.first.positions.striker, :game => @game } %>
+        <%= render :partial => 'position_row_tr', :locals => { :position => 'Midfield', :red_position => @game.teams.red.first.positions.midfield, :blue_position => @game.teams.blue.first.positions.midfield, :game => @game } %>
+        <%= render :partial => 'position_row_tr', :locals => { :position => 'Defense', :red_position => @game.teams.red.first.positions.defense, :blue_position => @game.teams.blue.first.positions.defense, :game => @game } %>
+        <%= render :partial => 'position_row_tr', :locals => { :position => 'Goalie', :red_position => @game.teams.red.first.positions.goalie, :blue_position => @game.teams.blue.first.positions.goalie, :game => @game } %>
       </table>
     </div>
 
