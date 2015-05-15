@@ -8,19 +8,19 @@ $position-column-width: 20%;
 
 .scoreboard{
 	display: inline-block;
-  border-color: #eee;
+  border-color: #ddd;
 
   td{
   	text-align: center;
   }
 
   .header{
-  	background-color: #eee;
+  	background-color: #f5f5f5;
 
 	  td{
 	  	border-style: solid;
-	  	border-width: 0px 0px 2px 0px;
-	  	border-color: #E4E4E4;
+	  	border-width: 0px 0px 1px 0px;
+	  	border-color: #ddd;
 	  }
 
   	.red-team-column{

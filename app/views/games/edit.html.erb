@@ -34,14 +34,6 @@
     <% end %>
   <% end %>
 
-  <% if player_signed_in? %>
-    <div class="btn-group">
-      <%= form_for @game, url: undo_game_path(@game), html: {method: "post"} do |f| %>
-        <% f.submit("Undo Last Goal", :class => 'btn btn-default btn-sm') %>
-      <% end %>
-    </div>
-  <% end %>
-
   <br>
   <br>
 
@@ -51,8 +43,9 @@
       <h5><strong>Scoreboard</strong></h5>
     </div>
     <div class="panel-body panel-overflow-x">
-
-      <%= button_to "Undo Goal", undo_game_path(@game), class: "btn btn-default btn-sm", style: "margin: .5em; font-weight:bold;" %>
+      <% if player_signed_in? %>
+        <%= button_to "Undo Goal", undo_game_path(@game), class: "btn btn-default btn-sm", style: "margin: .5em; font-weight:bold;" %>
+      <% end %>
 
       <table class="panel scoreboard">
 
