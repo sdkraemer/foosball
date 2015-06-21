@@ -1,3 +1,5 @@
+
+
 $blue: rgba(136, 153, 195, 1);
 $red: #D09191;
 
@@ -74,6 +76,7 @@ $pagination-active-border:    #3ec303;
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "font-awesome";
 
 
 html {

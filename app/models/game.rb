@@ -12,11 +12,6 @@ class Game < ActiveRecord::Base
 	has_many :positions, :through => :teams
 	has_many :players, :through => :positions
 	has_many :goals, :through => :positions
-	
-	
-
-	validate :teams_cannot_be_more_than_two
-	#, :game_cannot_be_started_without_two_teams
 
 	accepts_nested_attributes_for :teams, :allow_destroy => true
 	
@@ -24,26 +19,53 @@ class Game < ActiveRecord::Base
 
 	scope :completed, -> { where.not(completed_at: nil) }
 
+	validate :valid_if_two_teams
+
+	#validators
+	def valid_if_two_teams
+		errors[:base] << "Games must include two teams." if teams.reject(&:marked_for_destruction?).count != 2
+	end
+
+	#Class Methods
 
 	#builds new team based a passed in team. 
 	#Shifts players one spot moving from goalie to striker
 	private
-	def self.set_rematch_team(old_team, new_team)
-		4.times do |old_team_index|
+	def self.shift_team(old_team)
+		old_team_positions = old_team.positions.order(:position_type)
+		new_team = Team.new
+		if old_team.color == "red"
+			new_team.color = "blue"
+		else
+			new_team.color = "red"
+		end
+
+		#Position.position_types.each do |position_key, position_value|
+		4.times do |position_index|
  			position = new_team.positions.build
- 			position.position_type = old_team_index
+ 			position.position_type = position_index
 
  			#shift players from goalie to striker. look at last game played
- 			current_player_id = old_team[old_team_index].player_id
- 			l = (old_team_index-1)%4
- 			while l != old_team_index
- 				if current_player_id != old_team[l].player_id
- 					position.player_id = old_team[l].player_id
+ 			current_player_id = old_team_positions[position_index].player_id
+ 			l = (position_index-1)%4
+ 			found_teammate = false
+ 			while l != position_index
+ 				#puts "current_player_id:#{current_player_id} old_team_positions[l].player_id:#{old_team_positions[l].player_id}"
+ 				if current_player_id != old_team_positions[l].player_id
+ 					position.player_id = old_team_positions[l].player_id
+ 					found_teammate = true
  					break
  				end
  				l = (l-1)%4
  			end
+
+ 			#if no other player was found, means the entire team is the same player
+ 			if !found_teammate
+ 				position.player_id = current_player_id
+ 			end
  		end
+
+ 		return new_team
 	end
 
 
@@ -64,52 +86,38 @@ class Game < ActiveRecord::Base
 
 	#Handles how we rematch games.
 	#Teams rotate on table and each player is shifted a position over
-	def self.new_rematch_game(params)
-		lastgame = Game.includes(teams: [:positions]).find_by_id(params[:id])
- 		lastredteam = lastgame.teams.red.first.positions.order("positions.position_type")
- 		lastblueteam = lastgame.teams.blue.first.positions.order("positions.position_type")
+	def self.new_rematch_game(previous_game)
+ 		previous_red_team = previous_game.teams.red.first
+ 		previous_blue_team = previous_game.teams.blue.first
 
- 		rematch_game = self.new
+ 		rematch_game = Game.new
 
- 		#create the blue team
- 		blueteam = rematch_game.teams.build
- 		blueteam.color = "blue"
+ 		blue_team = Game.shift_team(previous_red_team)
+ 		red_team = Game.shift_team(previous_blue_team)
 
- 		set_rematch_team(lastredteam, blueteam)
-
- 		#create the red team
- 		redteam = rematch_game.teams.build
- 		redteam.color = "red"
-
- 		set_rematch_team(lastblueteam, redteam)
+ 		rematch_game.teams << [blue_team, red_team]
 
  		return rematch_game
 	end
 
+	#Instance Methods
+
 	#Passed eligible players
 	def generate_random_teams(players)
-		team_index = 0
-		blue_team = nil
-		red_team = nil
-		self.teams.each do |team|
-			if team.color == "red"
-				red_team = team
-			elsif team.color == "blue"
-				blue_team = team
-			end
-		end
 
 		#randomize
 		players = players.shuffle
 
-		players.each do |player|
-			if(team_index.odd?)
- 				blue_team.add_pending_player( player )
- 			else
- 				red_team.add_pending_player( player )
- 			end
+		assign_players_to_teams(players)
+	end
 
-			team_index += 1
+	def assign_players_to_teams(players)
+		players.each_with_index do |player, index|
+			if(index.even?)
+ 				self.teams[0].add_pending_player( player )
+ 			else
+ 				self.teams[1].add_pending_player( player )
+ 			end
 		end
 	end
 
@@ -165,11 +173,6 @@ class Game < ActiveRecord::Base
 
 	def team(player)
 		self.teams.joins(:positions).where(:positions => {player_id: player.id}).first
-	end
-
-	#validators
-	def teams_cannot_be_more_than_two
-    	errors[:base] = 'Games cannot have more than two teams' unless self.teams.size <= 2
 	end
 
 	#goals scored by the passed in player

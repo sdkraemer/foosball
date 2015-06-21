@@ -1,10 +1,13 @@
 <tr class="position-row">
   <td>
-    <% if red_position.goals.own_goal.count > 0 then %>
-      <span class="badge alert-danger pull-right"><%= red_position.goals.own_goal.count %></span>
-    <% end %>
-    <% if red_position.goals.scored_goal.count > 0 then %>
-      <span class="badge alert-success pull-right"><%= red_position.goals.scored_goal.count %></span>
+    <% if red_position.goals.count > 0 then %>
+      <% red_position.goals.scored_goal.count.times do %>
+        <%= fa_icon('futbol-o', class: "pull-right") %>
+      <% end %>
+
+      <% red_position.goals.own_goal.count.times do %>
+        <%= fa_icon('futbol-o', style: "color:red;", class: "pull-right") %>
+      <% end %>
     <% end %>
     
   </td>
@@ -30,11 +33,14 @@
     <% end %>
   </td>
   <td>
-    <% if blue_position.goals.scored_goal.count > 0 then %>
-      <span class="badge alert-success pull-left"><%= blue_position.goals.scored_goal.count %></span>
-    <% end %>
-    <% if blue_position.goals.own_goal.count > 0 then %>
-      <span class="badge alert-danger pull-left"><%= blue_position.goals.own_goal.count %></span>
+    <% if blue_position.goals.count > 0 then %>
+      <% blue_position.goals.scored_goal.count.times do %>
+        <%= fa_icon('futbol-o', class: "pull-left") %>
+      <% end %>
+      
+      <% blue_position.goals.own_goal.count.times do %>
+        <%= fa_icon('futbol-o', style: "color:red;", class: "pull-left") %>
+      <% end %>
     <% end %>
   </td>
 </tr>

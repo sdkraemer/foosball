@@ -26,7 +26,7 @@ class GamesController < ApplicationController
  	def edit
  		#@game = Game.includes(teams: [positions: [:goals]]).order("teams.color, positions.position_type desc").find(params[:id])
 
- 		@game = Game.includes(teams: [positions: [:goals]]).find(params[:id]).decorate
+ 		@game = Game.includes(teams: [positions: [goals: [:player]]]).find(params[:id]).decorate
  		@redteam = @game.teams.red.first
  		@blueteam = @game.teams.blue.first
  		@positions = Position.position_types
@@ -55,13 +55,15 @@ class GamesController < ApplicationController
  	end
 
  	def index
- 		@games = GameDecorator.decorate_collection(Game.includes(:teams).order("created_at desc").paginate(:page => params[:page], :per_page => 10))
+ 		@games = GameDecorator.decorate_collection(Game.order("created_at desc").paginate(:page => params[:page], :per_page => 10))
  	end
 
  	def rematch
  		#all of this will be moved to a service object or in the model. Refactored soon
  		#need to whitelist params
- 		@game = Game.new_rematch_game(params)
+ 		previous_game = Game.includes(teams: [:positions]).find_by_id(params[:id])
+
+ 		@game = Game.new_rematch_game(previous_game)
 
  		@players = Player.all.order(:firstname)
 

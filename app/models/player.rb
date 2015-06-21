@@ -20,8 +20,8 @@ class Player < ActiveRecord::Base
 
 	validates :username, presence: true, 
 						 length: { minimum: 4 }
-	#validates :firstname, presence: true
-	#validates :lastname, presence: true
+	validates :firstname, presence: true
+	validates :lastname, presence: true
 
 	#subtracts own goals
 	def total_goals
@@ -52,6 +52,10 @@ class Player < ActiveRecord::Base
 			0
 		end
 	end
+
+	def editable?
+  	return player_signed_in? && (current_player.admin? || current_player.id == self.id)
+  end
 
 	def player_wins
 		@player_wins ||= completed_teams.merge(Team.winner).count

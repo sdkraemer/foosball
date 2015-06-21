@@ -26,7 +26,7 @@ development:
   password: foosball_app
   pool: 5
 
-test: &test
+test: 
   adapter: postgresql
   encoding: utf8
   database: dt_test

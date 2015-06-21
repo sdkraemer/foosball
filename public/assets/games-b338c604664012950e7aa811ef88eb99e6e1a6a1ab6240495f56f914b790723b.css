@@ -1,0 +1,40 @@
+/* line 9, C:/Sites/foosball_app/app/assets/stylesheets/games.css.scss */
+.scoreboard {
+  display: inline-block;
+  border-color: #ddd;
+}
+/* line 13, C:/Sites/foosball_app/app/assets/stylesheets/games.css.scss */
+.scoreboard td {
+  text-align: center;
+}
+/* line 17, C:/Sites/foosball_app/app/assets/stylesheets/games.css.scss */
+.scoreboard .header {
+  background-color: #f5f5f5;
+}
+/* line 20, C:/Sites/foosball_app/app/assets/stylesheets/games.css.scss */
+.scoreboard .header td {
+  border-style: solid;
+  border-width: 0px 0px 1px 0px;
+  border-color: #ddd;
+}
+/* line 26, C:/Sites/foosball_app/app/assets/stylesheets/games.css.scss */
+.scoreboard .header .red-team-column {
+  width: 40%;
+}
+/* line 30, C:/Sites/foosball_app/app/assets/stylesheets/games.css.scss */
+.scoreboard .header .score-column {
+  width: 20%;
+}
+/* line 34, C:/Sites/foosball_app/app/assets/stylesheets/games.css.scss */
+.scoreboard .header .blue-team-column {
+  width: 40%;
+}
+/* line 41, C:/Sites/foosball_app/app/assets/stylesheets/games.css.scss */
+.scoreboard .position-row td {
+  padding: .25em .25em .25em .25em;
+}
+
+/* line 48, C:/Sites/foosball_app/app/assets/stylesheets/games.css.scss */
+.position-row:nth-child(odd) {
+  background-color: #f9f9f9;
+}

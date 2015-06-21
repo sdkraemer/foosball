@@ -5,8 +5,6 @@
       var $form = $(eo.currentTarget);
       var $checkbox_own_goal = $("#checkbox-own-goal");
 
-      console.dir($form);
-      console.dir($checkbox_own_goal);
       if( $checkbox_own_goal.is(":checked") ){
         $form[0].quantity.value = $("#checkbox-own-goal").val();
       }

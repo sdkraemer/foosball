@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
 layout "pages"
   def home
-  	@players = Player.includes(:goals).order("firstname")
+  	@players = Player.order("firstname")
   end
 end

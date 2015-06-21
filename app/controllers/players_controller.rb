@@ -8,7 +8,7 @@ class PlayersController < ApplicationController
 	end
 
   def create
-  	@player = Player.new(player_params)
+  	@player = Player.new(player_params).decorate
  
   	#if @player.save
 		#	format.html { redirect_to edit_player_path(@player), notice: 'Player created successfully.' }
@@ -56,5 +56,4 @@ class PlayersController < ApplicationController
 	    params.require(:player).permit(:username, :firstname, :lastname, :email)
 	  end
 
-  
 end

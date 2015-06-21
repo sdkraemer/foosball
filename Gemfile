@@ -18,6 +18,8 @@ gem 'sass-rails', '>= 3.2'
 gem 'devise', '~> 3.4.1'
 
 
+gem "bullet", :group => "development"
+
 group :development, :test do 
 	gem 'rspec-rails' 
 	gem "factory_girl_rails", "~> 4.0"
@@ -61,3 +63,5 @@ group :production do
 end
 
 gem 'annotate', '~> 2.6.3'
+
+gem "font-awesome-rails"

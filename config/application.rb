@@ -35,5 +35,7 @@ module FoosballApp
     Rails.application.config.assets.precompile += ['pages.css', 'players.css', 'games.css']
 
     config.time_zone = 'Arizona'
+
+    #config.action_controller.include_all_helpers = false
   end
 end

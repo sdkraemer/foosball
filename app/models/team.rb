@@ -3,15 +3,31 @@ class Team < ActiveRecord::Base
   has_many :positions, :dependent => :destroy
   has_many :goals, :through => :positions
 
+  accepts_nested_attributes_for :positions, :allow_destroy => true
 
   enum color: {blue: 0, red: 1}
-
-  accepts_nested_attributes_for :positions, :allow_destroy => true
 
   scope :winner, -> {where(winner: true)}
   scope :loser, -> {where.not(winner: true)}
   scope :blue, -> {where(color: 0)}
   scope :red, -> {where(color: 1)}
+
+
+  #validators
+  validates :color, uniqueness: { scope: :game_id }
+  validate :only_one_winner
+  validate :has_four_positions_filled
+  #TODO: validate team has four positions filled
+
+  def only_one_winner
+    if winner? and Team.exists? ["game_id = ? and winner = true and id != ?", game_id, id.to_i]
+      errors[:base] << "The game already has a winner"
+    end
+  end
+
+  def has_four_positions_filled
+    errors[:base] << "Teams must have all four positions filled." if positions.reject(&:marked_for_destruction?).count != 4
+  end
 
   #add a player to the pending player list
   def add_pending_player(player)
@@ -44,10 +60,10 @@ class Team < ActiveRecord::Base
     team = game.teams.build
 
     4.times{ team.positions.build }
-    team.positions[3].position_type = :striker
-    team.positions[2].position_type = :midfield
-    team.positions[1].position_type = :defense
-    team.positions[0].position_type = :goalie
+    team.positions[0].position_type = :striker
+    team.positions[1].position_type = :midfield
+    team.positions[2].position_type = :defense
+    team.positions[3].position_type = :goalie
 
     return team
   end

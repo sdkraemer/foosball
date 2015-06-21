@@ -5,6 +5,10 @@ class Position < ActiveRecord::Base
   #has_one :game, :through => :team
   enum position_type: {goalie: 0, defense: 1, midfield: 2, striker: 3}
 
+  #validators
+  validates :position_type, uniqueness: {scope: :team_id}
+  #TODO: must have player
+
   def self.striker
   	where(position_type: 3).first
   end
